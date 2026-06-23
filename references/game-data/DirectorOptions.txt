@@ -1,0 +1,1135 @@
+== DirectorOptions ==
+The<code>DirectorOptions</code>table is used for overriding various Director variables that govern among other things: infected spawning rough distance, finale stages, and others.
+
+In mode and map scripts, use SessionOptions and MutationOptions/MapOptions! SessionOptions for influencing the director, while the MutationOptions/MapOptions tables for setting default values. This is because BaseScriptedDOTable has priority and overrides some initial parameters in the DirectorOptions table of the mode script scope (see MergeSessionOptionTables in [[scriptedmode.nut]]).
+{{note|'Mode scripts' term refer to scripts ran when a specific gamemode is active, like <code>shootzones.nut</code>. 'Map scripts' on the other hand, could run anytime during a map, dependent of map logic. Examples for this include: <code>c3m1_plankcountry_holdout.nut</code>,<code>c9m1_minifinale.nut</code> and <code>c11m4_reserved_wanderers.nut</code>.}}
+
+Though, while customizing the Director's behaviour, you might come across these issues:<br>
+
+<u>'''The Fields interact a lot!'''</u><br>
+Say you have a custom mutation mod, and you use a<code>DirectorOptions</code>table to influence the Director. It reduces<code>CommonLimit</code> for lesser Commons, but also reduces both<code>MobSpawnTimeMin</code>and<code>MobSpawnTimeMax</code> to make them respawn faster. However, when playtesting your mod on Dead Center, everything seems to revert to default after you complete the Gauntlet fetch quest, featuring [[weapon_cola_bottles]]. While not a great example scenario, this is to show something that can happen if you're not careful: Things working not as expected, as DirectorOptions have been set in ways that conflict, causing unexpected behaviors.
+
+When you see odd behavior like this, think about what other variables and objects might be interfering with your plans. Going back to the earlier example, the cause of this could be other scripts using a<code>DirectorOptions</code>table, so if you remember, you could try a<code>MutationOptions</code>table and see if it works. But if it doesn't, its okay, because if you inspect the keys documentation below, you'll find out the key<code>cm_CommonLimit</code>also exists, and could solve your other problems. Viewing the list of usable<code>DirectorOptions</code>keys can be very vital when debugging issues like these, sometimes you find something that just does what exactly you want.
+
+<u>'''Don't forget to use the proper assignment operator!'''</u><br>
+With a new DirectorOptions table, you should use the<code><-</code>operator. <code><-</code> is required over using the<code>local</code>tag and the<code>=</code> operator, as variables created with<code><-</code>become globals, allowing the C++ side of the game to use DirectorOptions.
+
+{{note|The default values are for reference of the values set elsewhere in-game (if it has one), and do NOT mean that the DirectorOption key is set by default. Blank values for a key also imply something simply has no default value.}}
+
+=== General ===
+
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>AlwaysAllowWanderers</code> 
+|bool 
+|false
+|
+|-
+|<code>BuildUpMinInterval</code> 
+|int
+|15
+|Minimum time in seconds the BUILD_UP stage lasts.
+|-
+|<code>ClearedWandererRespawnChance</code> 
+|int
+|0; 3 in Scavenge
+|Percent chance (0-100) that cleared nav areas will get re-populated with wanderers.
+|-
+|<code>DisallowThreatType</code> 
+|int
+|
+|Disallows boss types from being spawned in ''threat'' areas in coop mode. Valid flags are:<code>ZOMBIE_WITCH, ZOMBIE_TANK</code>
+<!--
+These are found in director_c4_storm.nut, but don't actually do anything with the fallen survivor we know now:
+
+FallenSurvivorPotentialQuantity
+FallenSurvivorSpawnChance
+-->
+|-
+|<code>FarAcquireRange</code> 
+|float
+|2500.0
+|The maximum range common infected can spot survivors.
+|-
+|<code>NearAcquireRange</code> 
+|float
+|200.0
+|The range where common infected can spot survivors in the least amount of time.
+|-
+|<code>FarAcquireTime</code> 
+|float
+|5.0 
+|The time it takes for an infected to acquire the survivor after spotting them at maximum range.
+|-
+|<code>NearAcquireTime</code> 
+|float
+|0.5
+|The time it takes for an infected to acquire the survivor after spotting them at minimum range.
+|-
+|<code>GasCansOnBacks</code> 
+|bool
+|false
+|Puts the Hard Rain diesel cans on the survivors backs.
+|-
+|<code>GetSpecialSlotCountdownTime</code> 
+|float
+|
+|
+|-
+|<code>IgnoreNavThreatAreas</code> 
+|bool
+|false
+|Likely prevents bosses from spawning along the nav. {{confirm|In proper category, and still working? Used in dash}}
+|-
+|<code>InfectedFlags</code> 
+|int
+|0
+|Applies flags to newly spawned infected. Valid flags are: <code>INFECTED_FLAG_CANT_SEE_SURVIVORS, INFECTED_FLAG_CANT_HEAR_SURVIVORS, INFECTED_FLAG_CANT_FEEL_SURVIVORS</code>
+|-
+|<code>IntensityRelaxAllowWanderersThreshold</code> 
+|float
+|0.8 in Expert; 0.5 in Advanced; 0.3 in other difficulties
+|If the maximum intensity of the survivors is below this threshold, wandering commons can spawn.
+|-
+|<code>IntensityRelaxThreshold</code> 
+|float
+|0.9
+|All survivors must be below this intensity before a Peak is allowed to switch to Relax (in addition to the normal peak timer)
+|-
+|<code>JournalString</code> 
+|string
+|<nowiki>-none-</nowiki>
+|{{todo|Used in holdout, seems to build some kind of table. Is this for the Director Journal related I/O inputs?}}
+|-
+|<code>LockTempo</code> 
+|bool
+|false, true in finales
+|Locks the Director tempo in the BUILD_UP phase. {{note|The phases cycle consists of: <nowiki>BUILD_UP -> SUSTAIN_PEAK -> PEAK_FADE -> RELAX -> BUILD_UP</nowiki> again. Hordes only spawn in the BUILD_UP tempo.}}
+|-
+|<code>MobRechargeRate</code> 
+|float
+|0.0025
+|How fast a mob's CI spawn in-between each other.
+|-
+|<code>MobSpawnMaxTime</code> 
+|float
+|180.0-240.0
+|Maximum time in seconds between mob spawns. Default value depends on difficulty.
+|-
+|<code>MobSpawnMinTime</code> 
+|float
+|90.0-120.0
+|Minimum time in seconds between mob spawns. Default value depends on difficulty.
+|-
+|<code>MusicDynamicMobScanStopSize</code> 
+|int
+|3
+|When fewer than this many of a mob are in play, the mob music stops.
+|-
+|<code>MusicDynamicMobSpawnSize</code> 
+|int
+|25
+|Spawning a mob this large will play the mob music.
+|-
+|<code>MusicDynamicMobStopSize</code> 
+|int
+|8
+|When a mob gets to this size, the Director thinks about stopping the mob music.
+|-
+|<code>NumReservedWanderers</code> 
+|int
+|0
+|The number of wandering infected that cannot be despawned for mobs.
+|-
+|<code>PanicForever</code> 
+|bool
+|false
+|This seems to only work in gauntlets.
+|-
+|<code>PausePanicWhenRelaxing</code> 
+|bool
+|false
+|{{confirm|In proper category, and still working? Used in dash}}
+|-
+|<code>PreferredMobDirection</code> 
+|int
+|<nowiki>-1</nowiki>
+|Valid flags are: <code>SPAWN_ABOVE_SURVIVORS, SPAWN_ANYWHERE, SPAWN_BEHIND_SURVIVORS, SPAWN_FAR_AWAY_FROM_SURVIVORS, SPAWN_IN_FRONT_OF_SURVIVORS, SPAWN_LARGE_VOLUME, SPAWN_NEAR_IT_VICTIM, SPAWN_NO_PREFERENCE</code> 
+{{note|<code>SPAWN_NEAR_IT_VICTIM</code> does not exist before a finale and will cause an error, so I'm assuming the director picks someone as IT when the finale starts.{{confirm}}}}
+{{note|The flag names are case sensitive. Not using all caps will result in errors.}}
+{{note|<code>SPAWN_LARGE_VOLUME</code>is what makes infected be a considerable distance away, like on Dead Center finale.
+<br>{{todo|Explain more, and do it on a new page for<code>PreferredMobDirection</code>}} }}
+|-
+|<code>PreferredMobPosition</code> 
+|[[Left 4 Dead 2/Scripting/Script Functions#Vector|Vector]]
+|Vector(0, 0, 0)
+|{{confirm|In proper category}}
+|-
+|<code>PreferredMobPositionRange</code> 
+|float
+|1000.0
+|Only works if PreferredMobDirection is set to SPAWN_NEAR_POSITION.
+{{confirm|In proper category}}
+|-
+|<code>PreferredSpecialDirection</code> 
+|int
+|<nowiki>-1</nowiki>
+|When set to <code>SPAWN_NO_PREFERENCE</code>, it behaves like this: If it's a smoker, it'll be <code>SPAWN_ABOVE_SURVIVORS</code>. If it's a charger, it'll be a 10% chance to be <code>SPAWN_BEHIND_SURVIVORS</code>, otherwise it's <code>SPAWN_SPECIALS_IN_FRONT_OF_SURVIVORS</code>. All other classes will be <code>SPAWN_SPECIALS_IN_FRONT_OF_SURVIVORS</code>. If any of these directions (including a manually specified one) fail to find a location, all retries will happen with <code>SPAWN_SPECIALS_ANYWHERE</code> as the direction.{{note|The same values for <code>PreferredMobDirection</code> appear to work, BUT the following have also been seen, it is unknown if it's just redundancy.
+<code>SPAWN_SPECIALS_ANYWHERE, SPAWN_SPECIALS_IN_FRONT_OF_SURVIVORS</code>}}
+|-
+|<code>ProhibitBosses</code> 
+|bool
+|false
+|Prohibits tanks and witches from being spawned by the Director in THREAT areas. Campaign modes only.
+|-
+|<code>RelaxMaxFlowTravel</code> 
+|float
+|3000
+|How far the survivors can advance along the flow before transitioning from RELAX to BUILD_UP.
+|-
+|<code>RelaxMaxInterval</code> 
+|float
+|45
+|Maximum seconds to spend in the RELAX tempo.
+|-
+|<code>RelaxMinInterval</code> 
+|float
+|30
+|Minimum seconds to spend in the RELAX tempo.
+|-
+|<code>ShouldAllowMobsWithTank</code> 
+|bool
+|false
+|Whether to allow spawning of infected mobs (except Boomer / Bile Bomb spawned mobs) when a tank is in play. Campaign modes only.
+|-
+|<code>ShouldAllowSpecialsWithTank</code> 
+|bool
+|false
+|Whether to allow spawning of Special Infected when a tank is in play. Campaign modes only.
+{{warning|Causes the Director to spawn Special Infecteds by time, instead of tempo. }}
+|-
+|<code>ShouldConstrainLargeVolumeSpawn</code> 
+|bool
+|true
+|If<code>SPAWN_LARGE_VOLUME</code>is used, it'll obey the restrictions imposed by the convars<code>z_large_volume_mob_too_far_xy</code>and<code>z_large_volume_mob_too_far_z</code>.<br>{{todo|Move to new page with images}}
+|-
+|<code>ShouldIgnoreClearStateForSpawn</code> 
+|bool
+|false
+|{{confirm|In proper category, and still working? Used in dash}}
+|-
+|<code>SpawnBehindSurvivorsDistance</code> 
+|float
+| 
+|Appears to require <code>PreferredSpecialfction = SPAWN_BEHIND_SURVIVORS</code> 
+|-
+|<code>SpecialInfectedAssault</code> 
+|bool
+|false
+|{{todo|confirm category/working}}
+|-
+|<code>SpecialInitialSpawnDelayMax</code> 
+|float
+|60.0
+|Specials cannot spawn for this many time maximum after the survivors exited the saferoom. Campaign modes only.
+|-
+|<code>SpecialInitialSpawnDelayMin</code> 
+|float
+|30.0
+|Specials cannot spawn for this many time minimum after the survivors exited the saferoom. Campaign modes only.
+|-
+|<code>SpecialRespawnInterval</code> 
+|float
+|45 in Campaign, 10 in Campaign finales, 20 in Versus
+|Time in seconds before a Special Infected slot can respawn an infected.
+|-
+|<code>SurvivorMaxIncapacitatedCount</code> 
+|int
+|2
+|Maximum amount of survivor incapacitating before dying.
+|-
+|<code>SustainPeakMaxTime</code> 
+|float
+|5
+|in minutes{{confirm}}
+|-
+|<code>SustainPeakMinTime</code> 
+|float
+|3
+|in minutes{{confirm}}
+|-
+|<code>TankHitDamageModifierCoop</code> 
+|float
+|1.0
+|Damage dealt by Tanks is multiplied by this number in non PvP modes.
+|-
+|<code>TankRunSpawnDelay</code> 
+|float
+|15
+|in seconds (mutation19.nut Taaannnkk!) {{confirm|In proper category, and still working? Used in dash}}
+|-
+|<code>WanderingZombieDensityModifier</code> 
+|float
+|0.027 for versus, 0.03 otherwise
+|Multiplier for the amount of wandering infected.
+|-
+|<code>WaterSlowsMovement</code> 
+|bool
+|true
+|Whether to apply slowdown to survivors in water. {{note|The campaign "The Sacrifice" manually places {{ent|trigger_playermovement}} in some of its maps's water.
+|-
+|<code>ZombieDiscardRange</code> 
+|int
+|2500
+|Any CI beyond this point will be deleted, while any AI-controlled SI will suicide.
+|-
+|<code>ZombieDontClear</code> 
+|bool
+|false
+|Do not mark nav areas as cleared.
+|-
+|<code>ZombieSpawnInFog</code> 
+|bool
+|false
+|Allows zombies to spawn in in line-of-sight of survivors in fogged areas.
+|-
+|<code>ZombieSpawnRange</code> 
+|float
+|1500.0
+|Maximum distance from the survivors that the infected can spawn.
+|-
+|<code>ZombieTankHealth</code> 
+|float
+|4000.0
+|Sets the amount of health a tank spawns with. The health is later affected by hidden health modifiers:<br>{{ExpandBox|
+* Easy? - x0.75
+* Advanced?, Expert? - x2
+* Versus modes? - x1.5
+}}
+|}
+
+==== Spawning limits ====
+{{warning|Only the limits for bosses affect [[info_zombie_spawn|spawners]].}}
+
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>BileMobSize</code> 
+| int
+| 
+|Number of commons spawned in a mob when a bile bomb is thrown or a survivor is hit by vomit. Also controls the common limit if a survivor is currently vomited on. Only works if either scripted mode is enabled or the finale is active. Found in the Dead Center and The Passing finales.
+{{note|The common limit is not changed if the finale is a gauntlet finale.}}
+|-
+|<code>BoomerLimit</code> 
+| int
+| 1
+|Maximum number of Boomers allowed to be in play simultaneously.
+|-
+|<code>ChargerLimit</code> 
+|int
+| 1
+|Maximum number of chargers allowed to be in play simultaneously.
+|-
+|<code>CommonLimit</code> 
+|int
+|30
+|Maximum number of commons allowed to be in play simultaneously.
+|-
+|<code>DominatorLimit</code> 
+|int
+|2
+|Maximum number of dominator SI types (Hunter, Smoker, Jockey or Charger) that can freely fill up their caps. The extra SI type (3rd by default) will be capped at 1 regardless of its individual limit or<code>cm_BaseSpecialLimit</code>. Therefore, if<code>cm_BaseSpecialLimit = 2</code>,<code>MaxSpecials = 8</code>and<code>DominatorLimit</code>is unset, the maximum amount of dominators will be 2+2+1+0. The remaining 3 slots could only be filled with Boomers and Spitters. Its maximum effective value is 4 since there are only 4 dominator types. To block all dominators, set it to -1.
+|-
+|<code>HunterLimit</code> 
+|int
+|1 
+|Maximum number of Hunters allowed to be in play simultaneously.
+|-
+|<code>JockeyLimit</code> 
+|int
+|1 
+|Maximum number of Jockeys allowed to be in play simultaneously.
+|-
+|<code>MaxSpecials</code> 
+|int
+|2
+|Maximum number of Director spawned Special Infected allowed to be in play simultaneously.
+|-
+|<code>MegaMobSize</code> 
+|int
+|50
+|The amount of total infected spawned during a panic event.
+|-
+|<code>MobMaxPending</code> 
+|int
+|<nowiki>-1</nowiki>
+|How many infected can be left pending to spawn when the mob size is larger than <code>CommonLimit</code>.
+|-
+|<code>MobMaxSize</code> 
+|int
+|30
+|Maximum amount of infected that can spawn in a mob.
+|-
+|<code>MobMinSize</code> 
+|int
+|10
+|Minimum amount of infected that can spawn in a mob.
+|-
+|<code>MobSpawnSize</code> 
+|int
+|<nowiki>-none-</nowiki>
+|Static amount of infected in a mob. Overrides <code>MobMinSize</code> and <code>MobMaxSize</code>.
+|-
+|<code>PreTankMobMax</code> 
+|int
+|50
+|{{confirm|In proper category, and still working? Possibly Gauntlet finale specific?}}
+|-
+|<code>SmokerLimit</code> 
+|int
+|1
+|Maximum number of Smokers allowed to be in play simultaneously.
+|-
+|<code>SpitterLimit</code> 
+|int
+|1
+|Maximum number of Spitters allowed to be in play simultaneously.
+|-
+|<code>TankLimit</code> 
+|int
+|<nowiki>-1</nowiki> <!-- z_spawn can spawn infinite Tanks by default, but can't if this is set -->
+|Maximum number of Tanks allowed to be in play simultaneously.
+|-
+|<code>WitchLimit</code> 
+|int
+|<nowiki>-1</nowiki>
+|Maximum number of Witches allowed to be in play simultaneously. Less than 0 means no maximum.
+|}
+
+=== EMS Stage Specific ===
+{{todo}}
+
+'''See [[L4D2_EMS/Appendix:_Spawning_Infected]]'''
+
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>AddToSpawnTimer</code> 
+|float
+|0.0
+| {{Todo|needs more testing but it's related to adding time to special timers when stage changes}}
+|-
+|<code>AllowCrescendoEvents</code> 
+|bool 
+|true
+| 
+|-
+|<code>PanicSpecialsOnly</code> 
+|bool
+|false
+|The Panic should end when we finish with Specials, not wait for the MegaMob.
+|-
+|<code>PanicWavePauseMax</code> 
+|float
+|
+|{{todo|confirm category/working}}
+|-
+|<code>PanicWavePauseMin</code> 
+|float
+|
+|{{todo|confirm category/working}}
+|-
+|<code>ScriptedStageType</code> 
+|int
+|9
+|The type of stage to run next. See [[L4D2_EMS/StageTypeAppendix]] for a description of stage types.
+|-
+|<code>ScriptedStageValue</code> 
+|int
+|1
+|Dependant on the stage type.
+|-
+|<code>SpawnDirectionCount</code> 
+|int
+|0
+|{{todo|confirm category/working}}
+|-
+|<code>SpawnDirectionMask</code> 
+|int
+|0
+|A bitfield (using <code>SPAWNDIR_N, _NE, _E</code>, etc) of directors to spawn from _relative to_ a map entity named <code>Compass</code> in your map. Designed for Survival-like game modes. See [[L4D2_EMS/Appendix:_Spawning_Infected]].
+|-
+|<code>SpawnSetPosition</code> 
+|[[Left 4 Dead 2/Scripting/Script Functions#Vector|Vector]]
+|
+|The center point of the area infected can spawn in, when <code>SpawnSetRule</code> is set to <code>SPAWN_POSITIONAL</code>.
+|-
+|<code>SpawnSetRadius</code> 
+|float
+|1000.0
+|How far from the center point infected can spawn, when <code>SpawnSetRule</code> is set to <code>SPAWN_POSITIONAL</code>.
+|-
+|<code>SpawnSetRule</code> 
+|int
+|0
+|Overrides the mode of spawning used. Seems to be non-functional in finales. Valid flags are: <code>SPAWN_ANYWHERE, SPAWN_FINALE, SPAWN_BATTLEFIELD, SPAWN_SURVIVORS, SPAWN_POSITIONAL</code>
+|-
+|<code>TotalBoomers</code> 
+|int
+|0
+|Number of Boomers allowed in a wave.
+|-
+|<code>TotalChargers</code> 
+|int
+|0
+|Number of Chargers allowed in a wave.
+|-
+|<code>TotalHunters</code> 
+|int
+|0
+|Number of Hunters allowed in a wave.
+|-
+|<code>TotalJockeys</code> 
+|int
+|0
+|Number of Jockeys allowed in a wave.
+|-
+|<code>TotalSmokers</code> 
+|int
+|0
+|Number of Smokers allowed in a wave.
+|-
+|<code>TotalSpecials</code> 
+|int
+|0
+|Total number of Special Infected allowed in a wave.
+|-
+|<code>TotalSpitters</code> 
+|int
+|
+|Number of Spitters allowed in a wave.
+|}
+
+=== Finale Specific/Related ===
+A normal finale consists of X number of stages. Some variables in DirectorOptions can only be used during finales. Multiple custom finales can be defined in the same script, with the Options starting with <code>A_, B_, C_, D_, E_</code>. Which finale is used will be chosen randomly.
+
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>''[A-E]''_CustomFinale_StageCount</code> 
+|int
+|<nowiki>-none-</nowiki>
+|Number of stages. Needs to be set for Versus scoring to function properly.
+|-
+|<code>''[A-E]''_CustomFinale''X''</code> 
+|int
+|<nowiki>-none-</nowiki>
+|Stage type (enumerated PANIC, SCRIPTED (AKA ONSLAUGHT), DELAY, TANK), where X is the corresponding stage number. Usable in scripted panic events.
+|-
+|<code>''[A-E]''_CustomFinaleValue''X''</code> 
+|any
+|<nowiki>-none-</nowiki>
+|Value depends on the stage type above. Usable in scripted panic events.
+|-
+|<code>''[A-E]''_CustomFinaleMusic''X''</code> 
+|string
+|<nowiki>-none-</nowiki>
+|[[Soundscript]] entry to play. For instance, <code>A_CustomFinaleMusic1 = "C2M5.BadManTank2"</code> will play a Dark Carnival - Concert finale song. Does not work in Scripted Panic Events.
+{{note|Dark Carnival - Concert finale does not use this method! It instead uses map logic and [[ambient_music]]. However its finale script has<code>A_CustomFinaleMusic4<nowiki>= ""</nowiki></code>, suggesting that it may be disabling the default Tank music.}}
+|-
+|<code>EnforceFinaleNavSpawnRules</code> 
+|bool
+|true
+|Possibly used to enforce the finale spawning behavior without running a finale. {{todo|confirm category/working}}
+|-
+|<code>HordeEscapeCommonLimit</code> 
+|int
+|<nowiki>-1</nowiki>
+|Number of commons allowed in the escape stage.
+|-
+|<code>EscapeSpawnTanks</code> 
+|bool
+|true
+|Whether to spawn tanks in the escape sequence. {{todo|possibly EMS stage related}}
+|-
+|<code>MinimumStageTime</code> 
+|float
+|1.0
+|The minimum amount of time a SCRIPTED stage is allowed to run before ending. Unavailable for Scripted Panic Events.
+|}
+
+=== Gauntlet Specific/Related ===
+These options are specific to Gauntlet finales. Most of these can be found in director_gauntlet.nut
+
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>CustomTankKiteDistance</code> 
+|float
+|3000.0
+|Controls when the Gauntlet's Tank wave should start if a survivor advanced this far, in flow distance.
+|}
+
+;'''Movement Bonus related options''' 
+:Movement Bonus are an unique RELAX pacing method present only in Gauntlet finales. Everytime the Movement Timer finishes its timing, Movement Bonus is incremented by its set value. However if a new mob spawns, the Director initiates an extra variable afterwards: Current Bonus. Current Bonus is a timer that lasts as long as the current Movement Bonus, which when still ticking down, disallows the Director from spawning any new infecteds (except Tanks).
+
+To familiarize with Movement Bonus better, use<code>director_debug 1</code>in-game to see the values.
+
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>GauntletMovementThreshold</code> 
+|float
+|500.0
+|When survivors advance this many amount of flow distance, from the last reset point or the start point, Movement Bonus, Movement Timer and Current Bonus is reset to defaults.
+|-
+|<code>GauntletMovementTimerLength</code> 
+|float
+|5.0
+|The interval between each Movement Bonus increase, in seconds.
+|-
+|<code>GauntletMovementBonus</code> 
+|float
+|2.0
+|The initial value, and the amount the movement Bonus increases everytime the timer stops, in seconds.
+|-
+|<code>GauntletMovementBonusMax</code> 
+|float
+|30.0
+|The maximum value that the Movement Bonus can store.
+|}
+
+=== Versus Specific ===
+
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>TankHitDamageModifierVersus</code> 
+|float
+|1.0
+|Damage dealt by Tanks is multiplied by this number in PvP modes.
+|-
+|<code>ZombieGhostDelayMax</code> 
+|float
+|30.0
+|Maximum time in seconds until allowing player infected to respawn.
+|-
+|<code>ZombieGhostDelayMin</code> 
+|float
+|20.0
+|Minimum time in seconds until allowing player infected to respawn.
+|}
+
+=== Scavenge Specific/Related ===
+
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>ScavengeClusterBonusTime</code> 
+|float
+|15.0
+|{{todo|confirm category/working}}
+|-
+|<code>ScavengeRoundInitialTime</code> 
+|float
+|90.0
+|The timer's initial length when the round starts.
+|-
+|<code>ScavengeScoreBonusTime</code> 
+|float
+|15.0
+|Amount of time added to the timer when a gascan is successfully poured.
+|}
+
+=== Survival Specific/Related ===
+
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>SurvivalSetupTime</code> 
+|float
+|
+|(Used in mutation15.nut for Survival Versus with setup time of 90 seconds)
+|}
+
+=== Mutation Specific/Related ===
+Some of these values are mutation specific values of the global ones (cm_CommonLimit,cm_MaxSpecials, etc.), so use them if you are making a mutation, in case any map scripts are changing the global values.
+{{note|These options need scripted mode to be active (e.g. running a mutation)}}
+
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>ActiveChallenge</code> 
+|bool
+|false
+|Activates mutation mode. {{note|Seems to be obsolete with the EMS update.}}
+|-
+|<code>AllowWitchesInCheckpoints</code> 
+|bool 
+|false
+|Whether Witches are allowed to access nav areas marked with CHECKPOINT.
+|-
+|<code>cm_AggressiveSpecials</code> 
+|bool
+|false
+|If enabled, Special Infected will always go straight after the Survivors instead of possibly waiting around.
+|-
+|<code>cm_AllowPillConversion</code> 
+|bool
+|true
+|Allows pills to be converted to health kits or defibrillators in non-Expert difficulties.
+|-
+|<code>cm_AllowSurvivorRescue</code> 
+|bool
+|true if base mode is <code>coop</code>, false otherwise
+|Controls whether survivors can be respawned in rescue closets.
+|-
+|<code>cm_AutoReviveFromSpecialIncap</code> 
+|bool
+|false
+|Instantly revives a survivor when incapacitated by a Special Infected. {{Note|Doesn't work if a player isn't incapacitated by being dominated.|only=l4d2}}
+|-
+|<code>cm_AutoSpawnInfectedGhosts</code> 
+|bool
+|false
+|
+|-
+|<code>cm_BaseCommonAttackDamage</code> 
+|float
+|1.0
+|
+|-
+|<code>cm_BaseSpecialLimit</code> 
+|int
+|
+|Controls the default max limits of all the Special Infected. {{note|Overridden by individual special limits. See https://github.com/Tsuey/L4D2-Community-Update/issues/317.}}
+|-
+|<code>cm_CommonLimit</code> 
+|int
+|
+|Identical to the<code>CommonLimit</code> key, except this key will be prioritized over any<code>CommonLimit</code>keys.
+|-
+|<code>cm_FirstManOut</code> 
+|bool
+|false
+|Ends the escape when the first survivor reaches the escape vehicle.
+|-
+|<code>cm_HeadshotOnly</code> 
+|bool
+|false
+|Every infected only takes damage when shot to the head, else they will only stumble. Tanks are excepted from this. Used in the mutation "Headshot!"
+|-
+|<code>cm_HealingGnome</code> 
+|bool
+|false
+|All survivors start with only temporary health, with a gnome to be picked up near of them; The gnome will slowly regenerate the health of anyone who holds it. Used in the mutation "Healing Gnome."
+|-
+|<code>cm_InfiniteFuel</code> 
+|bool
+|false
+|(mutation7.nut Chainsaw Massacre)
+|-
+|<code>cm_MaxSpecials</code> 
+|int
+|<nowiki>-none-</nowiki>
+|Identical to the<code>MaxSpecials</code> key, except this key will be priortized over any<code>MaxSpecials</code>keys.
+|-
+|<code>cm_NoSurvivorBots</code> 
+|bool
+|false
+|Should survivor bots be kicked on round start? {{todo|Improve description, add side effects}}
+|-
+|<code>cm_ProhibitBosses</code> 
+|bool
+|<nowiki>-none-</nowiki>
+|Identical to the<code>ProhibitBosses</code> key, except this key will be priortized over any<code>ProhibitBosses</code>keys.
+|-
+|<code>cm_ShouldEscortHumanPlayers</code> 
+|bool
+|
+|
+|-
+|<code>cm_ShouldHurry</code> 
+|bool
+|false
+|Prompt survivor bots to rush as they would in Versus.
+|-
+|<code>cm_SingleScavengeCluster</code> 
+|bool
+|false
+|Only a group of scavenge cans together will be active at once. Used in the mutation "Follow the Liter."
+|-
+|<code>cm_SpecialRespawnInterval</code> 
+|int
+|<nowiki>-none-</nowiki>
+|Identical to the<code>SpecialRespawnInterval</code> key, except this key will be priortized over any<code>SpecialRespawnInterval</code>keys.
+|-
+|<code>cm_SpecialSlotCountdownTime</code> 
+|int
+|
+|Used in Hunting Party (mutation16.nut). {{todo|Is this the same as<code>cm_SpecialRespawnInterval</code>?}}
+|-
+|<code>cm_SpecialsRetreatToCover</code> 
+|bool
+|false
+|
+|-
+|<code>cm_TankLimit</code> 
+|int
+|<nowiki>-none-</nowiki>
+|Identical to the<code>TankLimit</code> key, except this key will be priortized over any<code>TankLimit</code>keys.
+|-
+|<code>cm_TankRun</code> 
+|bool
+|false
+|Allows bypassing c7m1's second train door. Used in Taaannnkk! (mutation19.nut) and Tank Run mutations. 
+|-
+|<code>cm_TempHealthOnly</code> 
+|bool
+|false
+|
+|-
+|<code>cm_VIPTarget</code> 
+|bool
+|false
+|Spawns a gnome in the safe area of each map that must be carried to the end of the map. Used in the mutation "Last Gnome on Earth"
+|-
+|<code>cm_WanderingZombieDensityModifier</code> 
+|float
+|0.027 for versus, 0.03 otherwise
+|Identical to the<code>WanderingZombieDensityModifier</code> key, except this key will be priortized over any<code>WanderingZombieDensityModifier</code>keys.
+|-
+|<code>cm_WitchLimit</code> 
+|int
+|<nowiki>-none-</nowiki>
+|Identical to the<code>WitchLimit</code> key, except this key will be priortized over any<code>WitchLimit</code>keys.
+|-
+|<code>NoMobSpawns</code> 
+|bool
+|false
+|Prevents new mobs from attempting to spawn. Does not reset the timer, and already pending infected still spawn.
+|-
+|<code>TempHealthDecayRate</code> 
+|float
+|0.27
+|0.27 is the <code>pain_pills_decay_rate</code> default, higher values equals quicker decay. {{important|If you add this to your MutationOptions don't delete it later in an attempt to get back to defaults. This option directly changes <code>pain_pills_decay_rate</code> cvar and is the only proper way to change that cvar dynamically.}}
+|}
+
+=== Callback Functions ===
+When functions with these specific names are placed in the DirectorOptions table, they get called by C++ with specific arguments used.
+==== Scripted mode callbacks ====
+{| class="standard-table" style="width: 100%;"
+! Function
+! Signature
+! Description
+|-
+| <code>[[L4D2_Director_Scripts/AllowFallenSurvivorItem|AllowFallenSurvivorItem]]</code>
+| <code>bool AllowFallenSurvivorItem(string ''classname'')</code>
+| For the given weapon classnames, return true to allow Fallen Survivors to carry the item, false / none is otherwise.
+|-
+| <code>[[L4D2_Director_Scripts/AllowWeaponSpawn|AllowWeaponSpawn]]</code>
+| <code>bool AllowWeaponSpawn(string ''classname'')</code>
+| Return false to the given string to disallow the respective weapon from spawning, used by several mutations.
+|-
+| <code>ConvertWeaponSpawn</code>
+| <code>string ConvertWeaponSpawn(string ''classname'')</code>
+| For the given weapon classname, return another classname to convert the weapon to another, used by several mutations.
+|-
+| <code>ConvertZombieClass</code>
+| <code>int ConvertZombieClass(int ''zombieType'')</code>
+| Converts player-controlled Special Infected into another. Used by the Taaannnk!! (<code style="color:#E5E5E5;">mutation19.nut</code>) and Riding My Survivor (<code style="color:#E5E5E5;">community3.nut</code>) mutations.
+|-
+| <code>EndScriptedMode</code>
+| <code>int EndScriptedMode()</code>
+| Called when the game attempts to end a round to allow changing the mission lost scenario or even preventing it. Used by the Dash mutation.
+|-
+| <code>GetDefaultItem</code>
+| <code>string GetDefaultItem(int ''index'')</code>
+| Repeatedly called with incrementing indices. Return a string of a weapon name to make it a default item for survivors, or 0 to end the iteration.
+|-
+| <code>ShouldAvoidItem</code>
+| <code>bool ShouldAvoidItem(string ''classname'')</code>
+| Return true or false to the given weapon classname to either make bots dislike or prefer a weapon. Used in mutations such as Four Swordsmen (<code style="color:#E5E5E5;">mutation5.nut</code>) or Chainsaw Massacre (<code style="color:#E5E5E5;">mutation7.nut</code>).
+|-
+| <code>ShouldPlayBossMusic</code>
+| <code>bool ShouldPlayBossMusic(int ''index'')</code>
+| Whether the standard Tank music (<code>Event.Tank</code>) should be force played in a Tank fight. Normally, the standard Tank music is only played before finales and the finale variants (<code>Event.TankMidpoint</code> and <code>Event.TankBrothers</code>) only played during Tank stages (specifically <code>FINALE_FINAL_BOSS</code> for the second variant). Returning <code>true</code> will override the finale Tank music variant in Tank stages and also allow the standard Tank music in other stages. Returning <code>false</code> will silence the music even outside finales.
+{{todo|What is the <code>index</code>?}}
+|}
+
+==== Internal callbacks ====
+{{warning|The following are internal/technical callbacks that should not be used directly by modders.}}
+{| class="standard-table" style="width: 100%;"
+! Function
+! Signature
+! Description
+|-
+| <code>OnChangeFinaleStage</code>
+| <code>void OnChangeFinaleStage(int ''finaletype'', int ''stagetype'')</code>
+| Called right before <code>[[#Callbacks|OnBeginCustomFinaleStage]]</code>. <code>finaletype</code> refers to the {{ent|trigger_finale}}'s '''Finale Type''' keyvalue. <code>stagetype</code> follows the special, <code>FINALE_</code> prefixed, enumeration. It is used by [[director_base.nut]] to set the default music for finale stages by modifying the variable <code>OnChangeFinaleMusic</code>. As such, it's only called for stages without a ''_CustomFinaleMusic'' and is unsuitable for general use.
+|}
+
+=== Data mining ===
+The following are data mined Director options that may have never been functional in-game.
+{| class="standard-table" style="width: 100%;"
+! Name
+! Type
+! Default value
+! Description
+|-
+|<code>cm_AllowTeamSwap</code> 
+|bool
+|true
+|
+|}
+
+== Enumerations ==
+List of enumerations from {{code|DirectorScript}} table. If you have a script that intends to access these but won't be ran with the [[info_director]]'s inputs, access them in this manner to avoid errors: {{code|DirectorScript.ALLOW_BASH_ALL}}.
+
+Some enumerations here are bitmasked, so they can be combined with other ones. Any hook / callback functions are stylized in ''italics''.
+
+{{Note|These aren't actual [http://squirrel-lang.org/doc/squirrel3.html#d0e1892 Squirrel enumerations], but rather table slots ''dressed up'' like constants.}}
+
+;[[Left 4 Dead 2/Scripting/Script Functions#AllowBash|''AllowBash'']]
+*ALLOW_BASH_ALL	= 0
+*ALLOW_BASH_PUSHONLY	= 1
+*ALLOW_BASH_NONE	= 2
+
+;[[Left 4 Dead 2/Scripting/Script Functions#CTerrorPlayer|CTerrorPlayer::GetSenseFlags or CTerrorPlayer::SetSenseFlags]] (Bitmasks)
+*BOT_CANT_SEE	= 1
+*BOT_CANT_HEAR	= 2
+*BOT_CANT_FEEL	= 4
+
+;[[Left 4 Dead 2/Scripting/Script Functions/CommandABot|CommandABot]]
+*BOT_CMD_ATTACK	= 0
+*BOT_CMD_MOVE	= 1
+*BOT_CMD_RETREAT	= 2
+*BOT_CMD_RESET	= 3
+
+;[[Left 4 Dead 2/Scripting/Script Functions#BotQuery|''BotQuery'']]
+*BOT_QUERY_NOTARGET	= 1
+
+;[[Left 4 Dead 2/Scripting/Script Functions#CBaseEntity|CBaseEntity::TakeDamage]] or [[Left 4 Dead 2/Scripting/Script Functions#AllowTakeDamage|''AllowTakeDamage'']] (Bitmasks)
+*DMG_BULLET	= 2
+*DMG_BURN	= 8
+*DMG_BLAST	= 64 (0x40)
+*DMG_MELEE	= 2097152 (0x200000) (also known as {{code|DMG_SLOWBURN}} in other Source games)
+*DMG_STUMBLE	= 33554432 (0x2000000)
+*DMG_BLAST_SURFACE	= 134217728 (0x8000000)
+*DMG_BUCKSHOT	= 536870912 (0x20000000)
+*DMG_HEADSHOT	= 1073741824 (0x40000000)
+
+;[[#Internal callbacks|''DirectorOptions.OnChangeFinaleStage'']]
+*FINALE_GAUNTLET_1	= 0
+*FINALE_HORDE_ATTACK_1	= 1
+*FINALE_HALFTIME_BOSS	= 2
+*FINALE_GAUNTLET_2	= 3
+*FINALE_HORDE_ATTACK_2	= 4
+*FINALE_FINAL_BOSS	= 5
+*FINALE_HORDE_ESCAPE	= 6
+*FINALE_CUSTOM_PANIC	= 7
+*FINALE_CUSTOM_TANK	= 8
+*FINALE_CUSTOM_SCRIPTED	= 9
+*FINALE_CUSTOM_DELAY	= 10
+*FINALE_CUSTOM_CLEAROUT	= 11
+*FINALE_GAUNTLET_START	= 12
+*FINALE_GAUNTLET_HORDE	= 13
+*FINALE_GAUNTLET_HORDE_BONUSTIME	= 14
+*FINALE_GAUNTLET_BOSS_INCOMING	= 15
+*FINALE_GAUNTLET_BOSS	= 16
+*FINALE_GAUNTLET_ESCAPE	= 17
+
+;[[L4D2 EMS/Appendix: HUD|Ticker_AddToHud]]
+:<u>FLAGS</u>
+:*HUD_FLAG_PRESTR	= 1
+:*HUD_FLAG_POSTSTR	= 2
+:*HUD_FLAG_BEEP	= 4
+:*HUD_FLAG_BLINK	= 8
+:*HUD_FLAG_AS_TIME	= 16
+:*HUD_FLAG_COUNTDOWN_WARN	= 32
+:*HUD_FLAG_NOBG	= 64
+:*HUD_FLAG_ALLOWNEGTIMER	= 128
+:*HUD_FLAG_ALIGN_LEFT	= 256
+:*HUD_FLAG_ALIGN_CENTER	= 512
+:*HUD_FLAG_ALIGN_RIGHT	= 768
+:*HUD_FLAG_TEAM_SURVIVORS	= 1024
+:*HUD_FLAG_TEAM_INFECTED	= 2048
+:*HUD_FLAG_TEAM_MASK	= 3072
+:*HUD_FLAG_NOTVISIBLE	= 16384
+:<u>SLOTS</u>
+:*HUD_LEFT_TOP	= 0
+:*HUD_LEFT_BOT	= 1
+:*HUD_MID_TOP	= 2
+:*HUD_MID_BOT	= 3
+:*HUD_RIGHT_TOP	= 4
+:*HUD_RIGHT_BOT	= 5
+:*HUD_TICKER	= 6
+:*HUD_FAR_LEFT	= 7
+:*HUD_FAR_RIGHT	= 8
+:*HUD_MID_BOX	= 9
+:*HUD_SCORE_TITLE	= 10
+:*HUD_SCORE_1	= 11
+:*HUD_SCORE_2	= 12
+:*HUD_SCORE_3	= 13
+:*HUD_SCORE_4	= 14
+:<u>SPECIAL</u>
+:*HUD_SPECIAL_TIMER0	= 0
+:*HUD_SPECIAL_TIMER1	= 1
+:*HUD_SPECIAL_TIMER2	= 2
+:*HUD_SPECIAL_TIMER3	= 3
+:*HUD_SPECIAL_COOLDOWN	= 4
+:*HUD_SPECIAL_ROUNDTIME	= 5
+:*HUD_SPECIAL_MAPNAME	= 6
+:*HUD_SPECIAL_MODENAME	= 7
+
+;[[Left 4 Dead 2/Scripting/Script Functions/ClientPrint|ClientPrint]]
+*HUD_PRINTNOTIFY	= 1
+*HUD_PRINTCONSOLE	= 2
+*HUD_PRINTTALK	= 3
+*HUD_PRINTCENTER	= 4
+
+;[[#General|DirectorOptions.InfectedFlags]] or [[Left 4 Dead 2/Scripting/Script Functions#Other|ReapplyInfectedFlags]] (Bitmasks)
+*INFECTED_FLAG_CANT_SEE_SURVIVORS	= 8192 (0x2000)
+*INFECTED_FLAG_CANT_HEAR_SURVIVORS	= 16384 (0x4000)
+*INFECTED_FLAG_CANT_FEEL_SURVIVORS	= 32768 (0x8000)
+
+;[[Left 4 Dead 2/Scripting/Script Functions#CTerrorPlayer|CTerrorPlayer::GetButtonMask]] (Bitmasks)
+*IN_ATTACK	= 1
+*IN_JUMP	= 2
+*IN_DUCK	= 4
+*IN_FORWARD	= 8
+*IN_BACK	= 16 (0x10)
+*IN_USE	= 32 (0x20)
+*IN_CANCEL	= 64 (0x40)
+*IN_LEFT	= 512 (0x200)
+*IN_RIGHT	= 1024 (0x400)
+*IN_ATTACK2	= 2048 (0x800)
+*IN_RELOAD	= 8192 (0x2000)
+
+;[[Left 4 Dead 2/Scripting/Script Functions#TerrorNavArea|TerrorNavArea]] or [[Left 4 Dead 2/Scripting/Script Functions#CNavLadder|CNavLadder]]
+*LADDER_UP	= 0
+*LADDER_DOWN	= 1
+
+;[[Left 4 Dead 2/Scripting/Script Functions#TerrorNavArea|TerrorNavArea]] or [[Left 4 Dead 2/Scripting/Script Functions#CNavLadder|CNavLadder]]
+*NAV_NORTH	= 0
+*NAV_EAST	= 1
+*NAV_SOUTH	= 2
+*NAV_WEST	= 3
+
+;[[#EMS Stage Specific|DirectorOptions.SpawnSetRule]]
+*SCRIPTED_SPAWN_FINALE	= 0
+*SCRIPTED_SPAWN_SURVIVORS	= 1
+*SCRIPTED_SPAWN_BATTLEFIELD	= 2
+*SCRIPTED_SPAWN_POSITIONAL	= 3
+
+;[[#EMS Stage Specific|DirectorOptions.SpawnSetRule]]
+*SPAWN_FINALE	= 0
+*SPAWN_SURVIVORS	= 1
+*SPAWN_BATTLEFIELD	= 2
+*SPAWN_POSITIONAL	= 3
+
+;SCRIPT_SHUTDOWN {{todo|Are these for the VS 2010 debugger?}}
+*SCRIPT_SHUTDOWN_MANUAL	= 0
+*SCRIPT_SHUTDOWN_ROUND_RESTART	= 1
+*SCRIPT_SHUTDOWN_TEAM_SWAP	= 2
+*SCRIPT_SHUTDOWN_LEVEL_TRANSITION	= 3
+*SCRIPT_SHUTDOWN_EXIT_GAME	= 4
+
+;[[#EMS Stage Specific|DirectorScript.SpawnDirectionMask]] (Bitmasks)
+*SPAWNDIR_N	= 1
+*SPAWNDIR_NE	= 2
+*SPAWNDIR_E	= 4
+*SPAWNDIR_SE	= 8
+*SPAWNDIR_S	= 16 (0x10)
+*SPAWNDIR_SW	= 32 (0x20)
+*SPAWNDIR_W	= 64 (0x40)
+*SPAWNDIR_NW	= 128 (0x80)
+
+;[[#General|DirectorOptions.PreferredMobDirection or DirectorOptions.PreferredSpecialDirection]]
+*SPAWN_NO_PREFERENCE	= -1
+*SPAWN_ANYWHERE	= 0
+*SPAWN_BEHIND_SURVIVORS	= 1
+*SPAWN_NEAR_IT_VICTIM	= 2
+*SPAWN_SPECIALS_IN_FRONT_OF_SURVIVORS	= 3
+*SPAWN_SPECIALS_ANYWHERE	= 4
+*SPAWN_FAR_AWAY_FROM_SURVIVORS	= 5
+*SPAWN_ABOVE_SURVIVORS	= 6
+*SPAWN_IN_FRONT_OF_SURVIVORS	= 7
+*SPAWN_VERSUS_FINALE_DISTANCE	= 8
+*SPAWN_LARGE_VOLUME	= 9
+*SPAWN_NEAR_POSITION	= 10
+
+;[[L4D2 EMS/StageTypeAppendix|DirectorOptions.ScriptedStageType]]
+*STAGE_PANIC	= 0
+*STAGE_TANK	= 1
+*STAGE_DELAY	= 2
+*STAGE_CLEAROUT	= 4
+*STAGE_SETUP	= 5
+*STAGE_ESCAPE	= 7
+*STAGE_RESULTS	= 8
+*STAGE_NONE	= 9
+
+;[[Left 4 Dead 2/Scripting/Script Functions/TraceLine|TraceLine]] (Bitmasks){{todo|Is this a bitmask or what? If yes, then the term's definition in the second paragraph should be revised as these can't be independently combined.}}
+*TRACE_MASK_ALL	= -1
+*TRACE_MASK_VISION	= 33579073
+*TRACE_MASK_VISIBLE_AND_NPCS	= 33579137
+*TRACE_MASK_PLAYER_SOLID	= 33636363
+*TRACE_MASK_NPC_SOLID	= 33701899
+*TRACE_MASK_SHOT	= 1174421507
+
+;[[Left 4 Dead 2/Scripting/Script Functions#Printing and Drawing|HUDManageTimers]]
+*TIMER_DISABLE	= 0
+*TIMER_COUNTUP	= 1
+*TIMER_COUNTDOWN	= 2
+*TIMER_STOP	= 3
+*TIMER_SET	= 4
+
+;[[Left 4 Dead 2/Scripting/Script Functions#CTerrorPlayer|CTerrorPlayer::GiveUpgrade]]
+*UPGRADE_INCENDIARY_AMMO	= 0
+*UPGRADE_EXPLOSIVE_AMMO	= 1
+*UPGRADE_LASER_SIGHT	= 2
+
+;[[Left 4 Dead 2/Scripting/Script Functions/ZSpawn|ZSpawn]]
+*ZOMBIE_NORMAL	= 0
+*ZOMBIE_SMOKER	= 1
+*ZOMBIE_BOOMER	= 2
+*ZOMBIE_HUNTER	= 3
+*ZOMBIE_SPITTER	= 4
+*ZOMBIE_JOCKEY	= 5
+*ZOMBIE_CHARGER	= 6
+*ZOMBIE_WITCH	= 7
+*ZOMBIE_TANK	= 8
+*ZSPAWN_MOB	= 10
+*ZSPAWN_MUDMEN	= 12
+*ZSPAWN_WITCHBRIDE	= 11

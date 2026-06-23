@@ -1,0 +1,1837 @@
+:''Refer back to [[Game Events (Source)]] for more events.''
+=== player_death ===
+{{qnotice|a game event, name may be 32 charaters long; this extents the original player_death by a new fields}}<br>
+{{begin-hl2msg|player_death|string}}
+{{hl2msg|short|userid|user ID who died}}
+{{hl2msg|long|entityid|entity ID who died, userid should be used first, to get the dead Player.  Otherwise, it is not a player, so use this.}}
+{{hl2msg|short|attacker|user ID who killed}}
+{{hl2msg|string|attackername|What type of zombie, so we don't have zombie names}}
+{{hl2msg|long|attackerentid|if killer not a player, the entindex of who killed.  Again, use attacker first}}
+{{hl2msg|string|weapon|weapon name killer used}}
+{{hl2msg|bool|headshot|signals a headshot}}
+{{hl2msg|bool|attackerisbot|is the attacker a bot}}
+{{hl2msg|string|victimname|What type of zombie, so we don't have zombie names}}
+{{hl2msg|bool|victimisbot|is the victim a bot}}
+{{hl2msg|bool|abort|did the victim abort}}
+{{hl2msg|long|type|damage type}}
+{{hl2msg|float|victim_x|}}
+{{hl2msg|float|victim_y|}}
+{{hl2msg|float|victim_z|}}
+{{end-hl2msg}}
+
+=== player_hurt ===
+{{qnotice|Registers all playable classes (Hunter, Smoker, Boomer, Tank, Survivors). See infected_hurt for Witch and Common Infected}}<br>
+{{begin-hl2msg|player_hurt|string}}
+{{hl2msg|1|local|Not networked}}
+{{hl2msg|short|userid|user ID who was hurt}}
+{{hl2msg|short|attacker|user id who attacked}}
+{{hl2msg|long|attackerentid|entity id who attacked, if attacker not a player, and userid therefore invalid}}
+{{hl2msg|short|health|remaining health points}}
+{{hl2msg|byte|armor|remaining armor points}}
+{{hl2msg|string|weapon|weapon name attacker used, if not the world}}
+{{hl2msg|short|dmg_health|damage done to health}}
+{{hl2msg|byte|dmg_armor|damage done to armor}}
+{{hl2msg|byte|hitgroup|hitgroup that was damaged}}
+{{hl2msg|long|type|damage type}}
+{{end-hl2msg}}
+=== player_team ===
+{{qnotice|player change his team}}<br>
+{{begin-hl2msg|player_team|string}}
+{{hl2msg|short|userid|user ID on server}}
+{{hl2msg|byte|team|team id}}
+{{hl2msg|byte|oldteam|old team id}}
+{{hl2msg|bool|disconnect|team change because player disconnects}}
+{{hl2msg|string|name|}}
+{{hl2msg|bool|isbot|}}
+{{end-hl2msg}}
+=== player_bot_replace ===
+{{qnotice|Bot replaced a player}}<br>
+{{begin-hl2msg|player_bot_replace|string}}
+{{hl2msg|short|player|user ID of the player}}
+{{hl2msg|short|bot|user ID of the bot}}
+{{end-hl2msg}}
+=== bot_player_replace ===
+{{qnotice|Player replaced a bot}}<br>
+{{begin-hl2msg|bot_player_replace|string}}
+{{hl2msg|short|bot|user ID of the bot}}
+{{hl2msg|short|player|user ID of the player}}
+{{end-hl2msg}}
+=== player_afk ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_afk|string}}
+{{hl2msg|short|player|user ID of the player}}
+{{end-hl2msg}}
+=== weapon_fire ===
+{{qnotice|}}<br>
+{{begin-hl2msg|weapon_fire|string}}
+{{hl2msg|1|local|don't network this, its way too spammy}}
+{{hl2msg|short|userid|}}
+{{hl2msg|string|weapon|used weapon name}}
+{{hl2msg|short|weaponid|used weapon ID}}
+{{hl2msg|short|count|number of bullets}}
+{{end-hl2msg}}
+=== weapon_fire_on_empty ===
+{{qnotice|}}<br>
+{{begin-hl2msg|weapon_fire_on_empty|string}}
+{{hl2msg|1|local|don't network this, its way too spammy}}
+{{hl2msg|short|userid|}}
+{{hl2msg|string|weapon|weapon name used}}
+{{hl2msg|short|count|number of bullets}}
+{{end-hl2msg}}
+=== weapon_reload ===
+{{qnotice|}}<br>
+{{begin-hl2msg|weapon_reload|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|bool|manual|player manually started the reload}}
+{{end-hl2msg}}
+=== weapon_zoom ===
+{{qnotice|}}<br>
+{{begin-hl2msg|weapon_zoom|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== ability_use ===
+{{qnotice|}}<br>
+{{eventnote|Called|When an infected uses their ability}}
+{{eventnote|Issues|Doesn't fire for jockey}}
+{{begin-hl2msg|ability_use|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|string|ability|Classname of ability. Possible values:
+*ability_tongue
+*ability_vomit
+*ability_lunge
+*ability_spit
+*ability_charge
+*ability_throw
+for the Smoker, Boomer, Hunter, Spitter, Charger and Tank respectively.}}
+{{hl2msg|short|context|enum of the way it was used (different for each ability)}}
+{{end-hl2msg}}
+
+=== ammo_pickup ===
+{{qnotice|}}<br>
+{{begin-hl2msg|ammo_pickup|string}}
+{{hl2msg|short|userid|The player who got some ammo from a weapon_ammo_spawner}}
+{{end-hl2msg}}
+=== item_pickup ===
+{{qnotice|}}<br>
+{{begin-hl2msg|item_pickup|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|string|item|either a weapon such as 'tmp' or 'hegrenade', or an item such as 'nvgs'}}
+{{end-hl2msg}}
+=== golden_crowbar_pickup ===
+{{qnotice|}}<br>
+{{begin-hl2msg|golden_crowbar_pickup|string}}
+{{hl2msg|short|userid| The player who picked up the crowbar}}
+{{end-hl2msg}}
+=== grenade_bounce ===
+{{qnotice|}}<br>
+{{begin-hl2msg|grenade_bounce|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== hegrenade_detonate ===
+{{qnotice|}}<br>
+{{begin-hl2msg|hegrenade_detonate|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|float|x|}}
+{{hl2msg|float|y|}}
+{{hl2msg|float|z|}}
+{{end-hl2msg}}
+=== bullet_impact ===
+{{qnotice|}}<br>
+{{begin-hl2msg|bullet_impact|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|float|x|}}
+{{hl2msg|float|y|}}
+{{hl2msg|float|z|}}
+{{end-hl2msg}}
+=== player_footstep ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_footstep|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== player_jump ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_jump|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== player_blind ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_blind|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== player_falldamage ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_falldamage|string}}
+{{hl2msg|short|userid|Who got hurt}}
+{{hl2msg|float|damage|for how much}}
+{{hl2msg|short|causer|Who caused them to do so (if anyone)}}
+{{end-hl2msg}}
+=== player_ledge_grab ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_ledge_grab|string}}
+{{hl2msg|short|userid|Who grabbed the ledge}}
+{{hl2msg|short|causer|Who caused them to do so (if anyone)}}
+{{end-hl2msg}}
+=== player_ledge_release ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_ledge_release|string}}
+{{hl2msg|short|userid|person who released from the ledge}}
+{{end-hl2msg}}
+=== door_moving ===
+{{qnotice|}}<br>
+{{begin-hl2msg|door_moving|string}}
+{{hl2msg|long|entindex|}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== door_open ===
+{{qnotice|}}<br>
+{{begin-hl2msg|door_open|string}}
+{{hl2msg|short|userid|Who opened the door}}
+{{hl2msg|bool|checkpoint|Is the door a checkpoint door}}
+{{hl2msg|bool|closed|Was the door closed when it started opening?}}
+{{end-hl2msg}}
+=== door_close ===
+{{qnotice|}}<br>
+{{begin-hl2msg|door_close|string}}
+{{hl2msg|short|userid|Who closed the door}}
+{{hl2msg|bool|checkpoint|Is the door a checkpoint door}}
+{{end-hl2msg}}
+=== door_unlocked ===
+{{qnotice|}}<br>
+{{begin-hl2msg|door_unlocked|string}}
+{{hl2msg|short|userid|Who opened the door}}
+{{hl2msg|bool|checkpoint|Is the door a checkpoint door}}
+{{end-hl2msg}}
+=== rescue_door_open ===
+{{qnotice|}}<br>
+{{begin-hl2msg|rescue_door_open|string}}
+{{hl2msg|short|userid|Who opened the door}}
+{{hl2msg|long|entindex|door that opened}}
+{{end-hl2msg}}
+=== waiting_checkpoint_door_used ===
+{{qnotice|Someone tried to open a checkpoint door that is locked till everyone loads in}}<br>
+{{begin-hl2msg|waiting_checkpoint_door_used|string}}
+{{hl2msg|short|userid|player who tried to open it}}
+{{hl2msg|long|entindex|door that was used}}
+{{end-hl2msg}}
+=== waiting_door_used_versus ===
+{{qnotice|Someone tried to open a checkpoint door that is locked till everyone loads in}}<br>
+{{begin-hl2msg|waiting_door_used_versus|string}}
+{{hl2msg|short|userid|player who tried to open it}}
+{{hl2msg|long|entindex|door that was used}}
+{{end-hl2msg}}
+=== waiting_checkpoint_button_used ===
+{{qnotice|Someone tried to push a button that's locked until everyone is gathered}}<br>
+{{begin-hl2msg|waiting_checkpoint_button_used|string}}
+{{hl2msg|short|userid|player who tried to open it}}
+{{end-hl2msg}}
+=== success_checkpoint_button_used ===
+{{qnotice|Someone pushed a button that's locked until everyone is gathered}}<br>
+{{begin-hl2msg|success_checkpoint_button_used|string}}
+{{hl2msg|short|userid|player who openned it}}
+{{end-hl2msg}}
+=== round_freeze_end ===
+{{qnotice|}}<br>
+{{begin-hl2msg|round_freeze_end|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== round_start_pre_entity ===
+{{qnotice|}}<br>
+{{begin-hl2msg|round_start_pre_entity|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== round_start_post_nav ===
+{{qnotice|}}<br>
+{{begin-hl2msg|round_start_post_nav|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== nav_blocked ===
+{{qnotice|}}<br>
+{{begin-hl2msg|nav_blocked|string}}
+{{hl2msg|long|area|}}
+{{hl2msg|bool|blocked|}}
+{{end-hl2msg}}
+=== nav_generate ===
+{{qnotice|}}<br>
+{{begin-hl2msg|nav_generate|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== round_end_message ===
+{{qnotice|}}<br>
+{{begin-hl2msg|round_end_message|string}}
+{{hl2msg|byte|winner|winner team/user i}}
+{{hl2msg|byte|reason|reson why team won}}
+{{hl2msg|string|message|end round message}}
+{{end-hl2msg}}
+=== round_end ===
+{{qnotice|}}<br>
+{{begin-hl2msg|round_end|string}}
+{{hl2msg|byte|winner|winner team/user i}}
+{{hl2msg|byte|reason|reson why team won}}
+{{hl2msg|string|message|end round message}}
+{{hl2msg|float|time|}}
+{{end-hl2msg}}
+=== vote_ended ===
+{{qnotice|}}<br>
+{{begin-hl2msg|vote_ended|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== vote_started ===
+{{qnotice|}}<br>
+{{begin-hl2msg|vote_started|string}}
+{{hl2msg|string|issue|}}
+{{hl2msg|string|param1|}}
+{{hl2msg|string|votedata|}}
+{{hl2msg|byte|team|}}
+{{hl2msg|long|initiator|entity id of the player who initiated the vote}}
+{{hl2msg|1|reliable|this event is reliable}}
+{{end-hl2msg}}
+
+=== vote_changed ===
+{{qnotice|}}<br>
+{{begin-hl2msg|vote_changed|string}}
+{{hl2msg|byte|yesVotes|}}
+{{hl2msg|byte|noVotes|}}
+{{hl2msg|byte|potentialVotes|}}
+{{end-hl2msg}}
+=== vote_passed ===
+{{qnotice|}}<br>
+{{begin-hl2msg|vote_passed|string}}
+{{hl2msg|string|details|}}
+{{hl2msg|string|param1|}}
+{{hl2msg|byte|team|}}
+{{hl2msg|1|reliable|this event is reliable}}
+{{end-hl2msg}}
+
+=== vote_failed ===
+{{qnotice|}}<br>
+{{begin-hl2msg|vote_failed|string}}
+{{hl2msg|byte|team|}}
+{{hl2msg|1|reliable|this event is reliable}}
+{{end-hl2msg}}
+
+=== vote_cast_yes ===
+{{qnotice|}}<br>
+{{begin-hl2msg|vote_cast_yes|string}}
+{{hl2msg|byte|team|}}
+{{hl2msg|long|entityid|entity id of the voter}}
+{{end-hl2msg}}
+=== vote_cast_no ===
+{{qnotice|}}<br>
+{{begin-hl2msg|vote_cast_no|string}}
+{{hl2msg|byte|team|}}
+{{hl2msg|long|entityid|entity id of the voter}}
+{{end-hl2msg}}
+=== infected_hurt ===
+{{qnotice|Registers for non-playable classes (Common Infected, Witch). See player_hurt for other playable classes}}<br>
+{{begin-hl2msg|infected_hurt|string}}
+{{hl2msg|1|local|don't network this, its way too spammy}}
+{{hl2msg|short|attacker|player userid who attacked}}
+{{hl2msg|long|entityid|entity id of infected}}
+{{hl2msg|byte|hitgroup|hitgroup that was damaged}}
+{{hl2msg|short|amount|how much damage was done}}
+{{hl2msg|long|type|damage type}}
+{{end-hl2msg}}
+=== infected_death ===
+{{qnotice|}}<br>
+{{begin-hl2msg|infected_death|string}}
+{{hl2msg|short|attacker|user ID who killed}}
+{{hl2msg|short|infected_id|ID of the infected that died}}
+{{hl2msg|short|gender|gender (type) of the infected}}
+{{hl2msg|short|weapon_id|ID of the weapon used}}
+{{hl2msg|bool|headshot|signals a headshot}}
+{{hl2msg|bool|minigun|signals a minigun kill}}
+{{hl2msg|bool|blast|signals a death from blast damage}}
+{{hl2msg|bool|submerged|indicates the infected was submerged}}
+{{end-hl2msg}}
+=== hostname_changed ===
+{{qnotice|}}<br>
+{{begin-hl2msg|hostname_changed|string}}
+{{hl2msg|string|hostname|}}
+{{end-hl2msg}}
+=== difficulty_changed ===
+{{qnotice|It appears that strDifficulty is z_difficulty value}}<br>
+{{begin-hl2msg|difficulty_changed|string}}
+{{hl2msg|short|newDifficulty|}}
+{{hl2msg|short|oldDifficulty|}}
+{{hl2msg|string|strDifficulty|}}
+{{end-hl2msg}}
+
+=== finale_start ===
+{{qnotice|}}<br>
+{{begin-hl2msg|finale_start|string}}
+{{hl2msg|short|rushes|}}
+{{end-hl2msg}}
+=== finale_rush ===
+{{qnotice|}}<br>
+{{begin-hl2msg|finale_rush|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== finale_escape_start ===
+{{qnotice|}}<br>
+{{begin-hl2msg|finale_escape_start|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== finale_vehicle_incoming ===
+{{qnotice|}}<br>
+{{begin-hl2msg|finale_vehicle_incoming|string}}
+{{hl2msg|string|campaign|}}
+{{end-hl2msg}}
+=== finale_vehicle_ready ===
+{{qnotice|}}<br>
+{{begin-hl2msg|finale_vehicle_ready|string}}
+{{hl2msg|string|campaign|}}
+{{end-hl2msg}}
+=== finale_vehicle_leaving ===
+{{qnotice|}}<br>
+{{begin-hl2msg|finale_vehicle_leaving|string}}
+{{hl2msg|short|survivorcount|number of survivors that made it out}}
+{{end-hl2msg}}
+=== finale_win ===
+{{qnotice|}}<br>
+{{begin-hl2msg|finale_win|string}}
+{{hl2msg|string|map_name|}}
+{{hl2msg|short|difficulty|}}
+{{end-hl2msg}}
+=== mission_lost ===
+{{qnotice|As in, the survivor team failed.  Opposite of finale_win, but not necessarily during the finale.}}<br>
+{{begin-hl2msg|mission_lost|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== finale_radio_start ===
+{{qnotice|}}<br>
+{{begin-hl2msg|finale_radio_start|string}}
+{{hl2msg|short|health|}}
+{{end-hl2msg}}
+=== finale_radio_damaged ===
+{{qnotice|}}<br>
+{{begin-hl2msg|finale_radio_damaged|string}}
+{{hl2msg|short|health|}}
+{{end-hl2msg}}
+=== final_reportscreen ===
+{{qnotice|Right before the final report screen comes up, let awards possibly fire}}<br>
+{{begin-hl2msg|final_reportscreen|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== map_transition ===
+{{qnotice|When campaign cinematics start}}<br>
+{{begin-hl2msg|map_transition|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+
+=== player_transitioned ===
+{{qnotice|When campaign cinematics end and player is transitioned to first person view}}<br>
+{{begin-hl2msg|player_transitioned|string}}
+{{hl2msg|short|userid|the person that just finished transitioning}}
+{{end-hl2msg}}
+
+=== heal_begin ===
+{{qnotice|}}<br>
+{{begin-hl2msg|heal_begin|string}}
+{{hl2msg|short|userid|person doing the healing}}
+{{hl2msg|short|subject|person being healed}}
+{{end-hl2msg}}
+=== heal_success ===
+{{qnotice|}}<br>
+{{begin-hl2msg|heal_success|string}}
+{{hl2msg|short|userid|person doing the healing}}
+{{hl2msg|short|subject|person being healed}}
+{{hl2msg|short|health_restored|amount of health restored}}
+{{end-hl2msg}}
+=== heal_end ===
+{{qnotice|}}<br>
+{{eventnote|Issues|subject is broken for this event, it always appears to be the player doing the healing}}
+{{begin-hl2msg|heal_end|string}}
+{{hl2msg|short|userid|person doing the healing}}
+{{hl2msg|short|subject|person being healed}}
+{{end-hl2msg}}
+
+=== heal_interrupted ===
+{{qnotice|}}<br>
+{{begin-hl2msg|heal_interrupted|string}}
+{{hl2msg|short|userid|person who was being healed, but moved.}}
+{{hl2msg|short|subject|person being healed}}
+{{end-hl2msg}}
+=== ammo_pack_used ===
+{{qnotice|}}<br>
+{{begin-hl2msg|ammo_pack_used|string}}
+{{hl2msg|short|userid|person giving the ammo}}
+{{hl2msg|short|subject|person receiving ammo}}
+{{end-hl2msg}}
+=== give_weapon ===
+{{qnotice|}}<br>
+{{begin-hl2msg|give_weapon|string}}
+{{hl2msg|short|userid|The giver of the weapon}}
+{{hl2msg|short|recipient|The recipient of the weapon}}
+{{hl2msg|short|weapon|The ID of the weapon given}}
+{{end-hl2msg}}
+=== pills_used ===
+{{qnotice|}}<br>
+{{begin-hl2msg|pills_used|string}}
+{{hl2msg|short|userid|person who had the pills}}
+{{hl2msg|short|subject|person swallowing the pills}}
+{{end-hl2msg}}
+=== pills_used_fail ===
+{{qnotice|}}<br>
+{{begin-hl2msg|pills_used_fail|string}}
+{{hl2msg|short|userid|person who tried to use the pills}}
+{{end-hl2msg}}
+=== ammo_pack_used_fail_no_weapon ===
+{{qnotice|}}<br>
+{{begin-hl2msg|ammo_pack_used_fail_no_weapon|string}}
+{{hl2msg|short|userid|person who tried to use the ammo pack}}
+{{hl2msg|short|subject|person it failed to help}}
+{{end-hl2msg}}
+=== ammo_pack_used_fail_full ===
+{{qnotice|}}<br>
+{{begin-hl2msg|ammo_pack_used_fail_full|string}}
+{{hl2msg|short|userid|person who tried to use the ammo pack}}
+{{hl2msg|short|subject|person it failed to help}}
+{{end-hl2msg}}
+=== ammo_pack_used_fail_doesnt_use_ammo ===
+{{qnotice|}}<br>
+{{begin-hl2msg|ammo_pack_used_fail_doesnt_use_ammo|string}}
+{{hl2msg|short|userid|person who tried to use the ammo pack}}
+{{hl2msg|short|subject|person it failed to help}}
+{{end-hl2msg}}
+=== ammo_pile_weapon_cant_use_ammo ===
+{{qnotice|}}<br>
+{{begin-hl2msg|ammo_pile_weapon_cant_use_ammo|string}}
+{{hl2msg|short|userid|person who tried to use an ammo pile with a grenade launcher}}
+{{end-hl2msg}}
+=== defibrillator_begin ===
+{{qnotice|}}<br>
+{{begin-hl2msg|defibrillator_begin|string}}
+{{hl2msg|short|userid|person who is defibrillating.}}
+{{hl2msg|short|subject|person being revived}}
+{{end-hl2msg}}
+=== defibrillator_used ===
+{{qnotice|}}<br>
+{{begin-hl2msg|defibrillator_used|string}}
+{{hl2msg|short|userid|person who used the defibrillator}}
+{{hl2msg|short|subject|person it helped}}
+{{end-hl2msg}}
+=== defibrillator_used_fail ===
+{{qnotice|}}<br>
+{{begin-hl2msg|defibrillator_used_fail|string}}
+{{hl2msg|short|userid|person who tried to use the defibrillator}}
+{{hl2msg|short|subject|person it failed to help}}
+{{end-hl2msg}}
+=== defibrillator_interrupted ===
+{{qnotice|}}<br>
+{{begin-hl2msg|defibrillator_interrupted|string}}
+{{hl2msg|short|userid|person who was defibrillating, but moved.}}
+{{hl2msg|short|subject|person being revived}}
+{{end-hl2msg}}
+=== upgrade_pack_begin ===
+{{qnotice|}}<br>
+{{begin-hl2msg|upgrade_pack_begin|string}}
+{{hl2msg|short|userid|person who is deploying the pack}}
+{{end-hl2msg}}
+=== upgrade_pack_used ===
+{{qnotice|}}<br>
+{{begin-hl2msg|upgrade_pack_used|string}}
+{{hl2msg|short|upgradeid|}}
+{{hl2msg|short|userid|person who is deploying the pack}}
+{{end-hl2msg}}
+=== upgrade_item_already_used ===
+{{qnotice|}}<br>
+{{begin-hl2msg|upgrade_item_already_used|string}}
+{{hl2msg|short|userid|person who tried to use an ammo upgrade twice}}
+{{hl2msg|string|upgradeclass|classname of the upgrade we tried to use}}
+{{end-hl2msg}}
+=== upgrade_failed_no_primary ===
+{{qnotice|}}<br>
+{{begin-hl2msg|upgrade_failed_no_primary|string}}
+{{hl2msg|short|userid|person who tried to use an upgrade without having a primary weapon}}
+{{hl2msg|string|upgrade|name of the upgrade we tried to use, eg "INCENDIARY_AMMO"}}
+{{end-hl2msg}}
+=== dead_survivor_visible ===
+{{qnotice|}}<br>
+{{begin-hl2msg|dead_survivor_visible|string}}
+{{hl2msg|short|userid|The player who sees the entity}}
+{{hl2msg|long|subject|Entindex of the entity they see}}
+{{hl2msg|short|deadplayer|user id of the dead player represented}}
+{{end-hl2msg}}
+=== adrenaline_used ===
+{{qnotice|}}<br>
+{{begin-hl2msg|adrenaline_used|string}}
+{{hl2msg|short|userid|person who had and used the adrenaline}}
+{{end-hl2msg}}
+=== revive_begin ===
+{{qnotice|}}<br>
+{{begin-hl2msg|revive_begin|string}}
+{{hl2msg|short|userid|person doing the reviving}}
+{{hl2msg|short|subject|person being revived}}
+{{end-hl2msg}}
+=== revive_success ===
+{{qnotice|}}<br>
+{{begin-hl2msg|revive_success|string}}
+{{hl2msg|short|userid|person doing the reviving}}
+{{hl2msg|short|subject|person who was revived}}
+{{hl2msg|bool|lastlife|person revived will die if they fall again}}
+{{hl2msg|bool|ledge_hang|1 if person revived was ledge hanging}}
+{{end-hl2msg}}
+=== revive_end ===
+{{qnotice|}}<br>
+{{begin-hl2msg|revive_end|string}}
+{{hl2msg|short|userid|person doing the reviving}}
+{{hl2msg|short|subject|person being revived}}
+{{hl2msg|bool|ledge_hang|person is ledge hanging}}
+{{end-hl2msg}}
+=== drag_begin ===
+{{qnotice|}}<br>
+{{begin-hl2msg|drag_begin|string}}
+{{hl2msg|short|userid|person doing the dragging}}
+{{hl2msg|short|subject|person being dragged}}
+{{end-hl2msg}}
+=== drag_end ===
+{{qnotice|}}<br>
+{{begin-hl2msg|drag_end|string}}
+{{hl2msg|short|userid|person doing the dragging}}
+{{hl2msg|short|subject|person being dragged}}
+{{end-hl2msg}}
+=== player_incapacitated ===
+{{qnotice|when a player becomes incapacitated.  This is also called when a tank is killed.}}<br>
+{{begin-hl2msg|player_incapacitated|string}}
+{{hl2msg|short|userid|person who became incapacitated}}
+{{hl2msg|short|attacker|user ID who made us incapacitated}}
+{{hl2msg|long|attackerentid|if attacker not player, entindex of who made us incapacitated}}
+{{hl2msg|string|weapon|weapon name attacker used}}
+{{hl2msg|long|type|damage type}}
+{{end-hl2msg}}
+=== player_incapacitated_start ===
+{{qnotice|when a player is about to become incapacitated, so you can see his last living state}}<br>
+{{begin-hl2msg|player_incapacitated_start|string}}
+{{hl2msg|short|userid|person who became incapacitated}}
+{{hl2msg|short|attacker|user ID who made us incapacitated}}
+{{hl2msg|long|attackerentid|if attacker not player, entindex of who made us incapacitated}}
+{{hl2msg|string|weapon|weapon name attacker used}}
+{{hl2msg|long|type|damage type}}
+{{end-hl2msg}}
+=== player_entered_start_area ===
+{{qnotice|when a player spawns into the player start area}}<br>
+{{begin-hl2msg|player_entered_start_area|string}}
+{{hl2msg|short|userid|person who entered}}
+{{end-hl2msg}}
+=== player_first_spawn ===
+{{qnotice|when a player spawns for the first time in a given mission}}<br>
+{{begin-hl2msg|player_first_spawn|string}}
+{{hl2msg|short|userid|person who spawned}}
+{{hl2msg|string|map_name|}}
+{{hl2msg|bool|isbot|}}
+{{end-hl2msg}}
+
+=== player_left_start_area ===
+{{qnotice|when a player leaves the player start area}}<br>
+{{begin-hl2msg|player_left_start_area|string}}
+{{hl2msg|short|userid|person who left}}
+{{end-hl2msg}}
+=== player_left_safe_area ===
+{{qnotice|when a player leaves the safe area}}<br>
+{{begin-hl2msg|player_left_safe_area|string}}
+{{hl2msg|short|userid|person who left}}
+{{hl2msg|byte|playercount|}}
+{{end-hl2msg}}
+=== player_entered_checkpoint ===
+{{qnotice|when a basecombatcharacter enters a checkpoint area}}<br>
+{{begin-hl2msg|player_entered_checkpoint|string}}
+{{hl2msg|short|userid|player who entered}}
+{{hl2msg|long|entityid|If not a player, the entity index of the one entering}}
+{{hl2msg|long|door|Entindex of the checkpoint door the player entered to get here.}}
+{{hl2msg|long|area|}}
+{{hl2msg|string|doorname|name of the entity they see}}
+{{end-hl2msg}}
+=== player_left_checkpoint ===
+{{qnotice|when a player leaves a checkpoint area}}<br>
+{{begin-hl2msg|player_left_checkpoint|string}}
+{{hl2msg|short|userid|player who left}}
+{{hl2msg|long|entityid|If not a player, the entity index of the one exiting}}
+{{hl2msg|long|area|}}
+{{end-hl2msg}}
+=== player_shoved ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_shoved|string}}
+{{hl2msg|short|userid|player index who was shoved}}
+{{hl2msg|short|attacker|player index who attacked them}}
+{{end-hl2msg}}
+=== entity_shoved ===
+{{qnotice|}}<br>
+{{begin-hl2msg|entity_shoved|string}}
+{{hl2msg|short|entityid|the entity index of the one who was shoved}}
+{{hl2msg|short|attacker|player index who attacked them}}
+{{end-hl2msg}}
+=== player_jump_apex ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_jump_apex|string}}
+{{hl2msg|short|userid|player who jumped}}
+{{end-hl2msg}}
+=== player_blocked ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_blocked|string}}
+{{hl2msg|short|userid|player index who was trying to move}}
+{{hl2msg|short|blocker|player index who kept them from moving}}
+{{end-hl2msg}}
+=== player_now_it ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_now_it|string}}
+{{hl2msg|short|userid|Player who is now it}}
+{{hl2msg|short|attacker|player that did the it-ing}}
+{{hl2msg|bool|exploded|whether it was vomit or explosion}}
+{{hl2msg|bool|infected|is the vomit infectious}}
+{{hl2msg|bool|by_boomer|came from a boomer}}
+{{end-hl2msg}}
+=== player_no_longer_it ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_no_longer_it|string}}
+{{hl2msg|short|userid|Player who is now no longer it}}
+{{end-hl2msg}}
+=== witch_harasser_set ===
+{{qnotice|}}<br>
+{{begin-hl2msg|witch_harasser_set|string}}
+{{hl2msg|short|userid|Player who woke up the witch}}
+{{hl2msg|long|witchid|Entindex of witch woken up}}
+{{hl2msg|bool|first|First time the witch set a harasser}}
+{{end-hl2msg}}
+=== witch_spawn ===
+{{qnotice|}}<br>
+{{begin-hl2msg|witch_spawn|string}}
+{{hl2msg|long|witchid|Entindex of witch spawning right now.}}
+{{end-hl2msg}}
+=== witch_killed ===
+{{qnotice|}}<br>
+{{begin-hl2msg|witch_killed|string}}
+{{hl2msg|short|userid|Player who killed the witch}}
+{{hl2msg|long|witchid|Entindex of witch that was killed.}}
+{{hl2msg|bool|oneshot|TRUE if the Witch was killed with one shot}}
+{{hl2msg|bool|melee_only|TRUE if the witch was only killed by melee attacks (no blast, burn, or bullet damage)}}
+{{hl2msg|bool|bride|bride variant?}}
+{{end-hl2msg}}
+=== tank_spawn ===
+{{qnotice|}}<br>
+{{begin-hl2msg|tank_spawn|string}}
+{{hl2msg|short|userid|User ID of the tank spawning now}}
+{{hl2msg|long|tankid|Entindex of tank spawning right now.}}
+{{end-hl2msg}}
+=== melee_kill ===
+{{qnotice|}}<br>
+{{begin-hl2msg|melee_kill|string}}
+{{hl2msg|short|userid|Player who bashed the infected}}
+{{hl2msg|long|entityid|Entindex of infected what got killed}}
+{{hl2msg|bool|ambush|Infected was unaware when killed}}
+{{end-hl2msg}}
+=== area_cleared ===
+{{qnotice|}}<br>
+{{begin-hl2msg|area_cleared|string}}
+{{hl2msg|short|userid|person who cleared the area}}
+{{hl2msg|long|area|id of the cleared area}}
+{{end-hl2msg}}
+=== award_earned ===
+{{qnotice|}}<br>
+{{begin-hl2msg|award_earned|string}}
+{{hl2msg|short|userid|player who earned the award}}
+{{hl2msg|long|entityid|client likes ent id}}
+{{hl2msg|long|subjectentid|entity id of other party in the award, if any}}
+{{hl2msg|short|award|id of award earned}}
+{{end-hl2msg}}
+=== tongue_grab ===
+{{qnotice|}}<br>
+{{begin-hl2msg|tongue_grab|string}}
+{{hl2msg|short|userid|player who did the grabbing}}
+{{hl2msg|short|victim|player that got grabbed}}
+{{end-hl2msg}}
+=== tongue_broke_bent ===
+{{qnotice|}}<br>
+{{begin-hl2msg|tongue_broke_bent|string}}
+{{hl2msg|short|userid|Tongue owner}}
+{{end-hl2msg}}
+=== tongue_broke_victim_died ===
+{{qnotice|}}<br>
+{{begin-hl2msg|tongue_broke_victim_died|string}}
+{{hl2msg|short|userid|Tongue owner}}
+{{end-hl2msg}}
+=== tongue_release ===
+{{qnotice|Fired in all cases where the tongue releases a victim, whether choked or not, etc.}}<br>
+{{begin-hl2msg|tongue_release|string}}
+{{hl2msg|short|userid|The tongue owner}}
+{{hl2msg|short|victim|The (now released) victim}}
+{{hl2msg|long|distance|Distance the victim was dragged.}}
+{{end-hl2msg}}
+
+=== choke_start ===
+{{qnotice|}}<br>
+{{begin-hl2msg|choke_start|string}}
+{{hl2msg|short|userid|The choker}}
+{{hl2msg|short|victim|The person being choked}}
+{{end-hl2msg}}
+=== choke_end ===
+{{qnotice|}}<br>
+{{begin-hl2msg|choke_end|string}}
+{{hl2msg|short|userid|The choker}}
+{{hl2msg|short|victim|The person being choked}}
+{{end-hl2msg}}
+=== choke_stopped ===
+{{qnotice|}}<br>
+{{begin-hl2msg|choke_stopped|string}}
+{{hl2msg|short|userid|Who stopped it}}
+{{hl2msg|short|victim|And who was being choked}}
+{{hl2msg|short|smoker|The tongue owner}}
+{{hl2msg|short|release_type|How did it break?}}
+{{end-hl2msg}}
+=== tongue_pull_stopped ===
+{{qnotice|Called when a smoker tongue is cleared on a dragging player. Includes cuts.}}<br>
+{{begin-hl2msg|tongue_pull_stopped|string}}
+{{hl2msg|short|userid|Who stopped it}}
+{{hl2msg|short|victim|And who was being pulled}}
+{{hl2msg|short|smoker|The tongue owner}}
+{{hl2msg|short|release_type|How did it break?}}
+{{hl2msg|long|damage_type|bullet, slash, chainsaw}}
+{{end-hl2msg}}
+
+=== lunge_shove ===
+{{qnotice|}}<br>
+{{begin-hl2msg|lunge_shove|string}}
+{{hl2msg|short|userid|player who did the lunging}}
+{{hl2msg|short|victim|player that got lunged}}
+{{end-hl2msg}}
+=== lunge_pounce ===
+{{qnotice|}}<br>
+{{begin-hl2msg|lunge_pounce|string}}
+{{hl2msg|short|userid|player who did the lunging}}
+{{hl2msg|short|victim|player that got lunged}}
+{{hl2msg|long|distance|Distance from pounce start to contact}}
+{{hl2msg|short|damage|}}
+{{end-hl2msg}}
+=== pounce_end ===
+{{qnotice|}}<br>
+{{begin-hl2msg|pounce_end|string}}
+{{hl2msg|short|userid|Who stopped it}}
+{{hl2msg|short|victim|And who was being pounced}}
+{{end-hl2msg}}
+=== pounce_stopped ===
+{{qnotice|}}<br>
+{{begin-hl2msg|pounce_stopped|string}}
+{{hl2msg|short|userid|Who stopped it}}
+{{hl2msg|short|victim|And who was being pounced}}
+{{end-hl2msg}}
+=== pounce_attempt_stopped ===
+{{qnotice|}}<br>
+{{begin-hl2msg|pounce_attempt_stopped|string}}
+{{hl2msg|short|userid|Who stopped it}}
+{{hl2msg|short|weaponid|used weapon ID}}
+{{end-hl2msg}}
+=== fatal_vomit ===
+{{qnotice|}}<br>
+{{begin-hl2msg|fatal_vomit|string}}
+{{hl2msg|short|userid|Who vomited}}
+{{hl2msg|short|victim|And who was killed or incapped}}
+{{end-hl2msg}}
+=== survivor_call_for_help ===
+{{qnotice|}}<br>
+{{begin-hl2msg|survivor_call_for_help|string}}
+{{hl2msg|short|userid|The actual player entity who is awaiting rescue.}}
+{{hl2msg|long|subject|SurvivorRescue entity representing the player who needs to be rescued from the closet (used for position)}}
+{{end-hl2msg}}
+=== survivor_rescued ===
+{{qnotice|}}<br>
+{{begin-hl2msg|survivor_rescued|string}}
+{{hl2msg|short|rescuer|player that did the rescuing}}
+{{hl2msg|short|victim|the survivor being rescued}}
+{{hl2msg|long|dooridx|ent index of the rescue door}}
+{{end-hl2msg}}
+=== survivor_rescue_abandoned ===
+{{qnotice|}}<br>
+{{begin-hl2msg|survivor_rescue_abandoned|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== relocated ===
+{{qnotice|}}<br>
+{{begin-hl2msg|relocated|string}}
+{{hl2msg|short|userid|player who was relocated}}
+{{end-hl2msg}}
+=== respawning ===
+{{qnotice|}}<br>
+{{begin-hl2msg|respawning|string}}
+{{hl2msg|short|userid|player who started respawning}}
+{{end-hl2msg}}
+=== tank_frustrated ===
+{{qnotice|}}<br>
+{{begin-hl2msg|tank_frustrated|string}}
+{{hl2msg|short|userid|player who was culled}}
+{{end-hl2msg}}
+=== weapon_given ===
+{{qnotice|}}<br>
+{{begin-hl2msg|weapon_given|string}}
+{{hl2msg|short|userid|player who got the weapon}}
+{{hl2msg|short|giver|player that did the giving}}
+{{hl2msg|short|weapon|weapon id given}}
+{{hl2msg|short|weaponentid|weapon entity id}}
+{{end-hl2msg}}
+=== weapon_drop ===
+{{qnotice|}}<br>
+{{eventnote|Called|When an item is removed from a survivor's inventory}}
+{{eventnote|Related Events|Called before heal_success, defibrillator_used, upgrade_pack_used, but called after pills_used and adrenaline_used}}
+{{begin-hl2msg|weapon_drop|string}}
+{{hl2msg|short|userid|player who dropped the weapon}}
+{{hl2msg|string|item|either a weapon such as 'tmp' or 'hegrenade', or an item such as 'nvgs'}}
+{{hl2msg|short|propid|entindex of the dropped weapon}}
+{{end-hl2msg}}
+=== weapon_drop_to_prop ===
+{{qnotice|}}<br>
+{{begin-hl2msg|weapon_drop_to_prop|string}}
+{{hl2msg|short|userid|player who dropped the weapon}}
+{{hl2msg|string|item|weapon string "weapon_*"}}
+{{hl2msg|short|propid|entindex of the dropped weapon}}
+{{end-hl2msg}}
+=== break_breakable ===
+{{qnotice|Override from gameevents.res}}<br>
+{{begin-hl2msg|break_breakable|string}}
+{{hl2msg|short|userid|userid of breaker}}
+{{hl2msg|long|entindex|entindex of thing breaking}}
+{{hl2msg|byte|material|BREAK_GLASS, BREAK_WOOD, etc}}
+{{hl2msg|bool|hulkonly|SF_BREAK_HULK_ONLY}}
+{{hl2msg|short|achievement|tag to identify achievement on the client }}
+{{end-hl2msg}}
+=== achievement_earned ===
+{{qnotice|}}<br>
+{{begin-hl2msg|achievement_earned|string}}
+{{hl2msg|byte|player|entindex of the player}}
+{{hl2msg|short|achievement|achievement ID}}
+{{end-hl2msg}}
+=== spec_target_updated ===
+{{qnotice|}}<br>
+{{begin-hl2msg|spec_target_updated|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== spawner_give_item ===
+{{qnotice|A spawner has given a player an item (weapon, pills, ammo, health kit, etc)}}<br>
+{{begin-hl2msg|spawner_give_item|string}}
+{{hl2msg|short|userid|Item recipient}}
+{{hl2msg|string|item|Name of item given}}
+{{hl2msg|long|spawner|entindex of the spawner entity}}
+{{end-hl2msg}}
+=== create_panic_event ===
+{{qnotice|A panic event has been created, though not necessarily started}}<br>
+{{begin-hl2msg|create_panic_event|string}}
+{{hl2msg|short|userid|player who was started the panic}}
+{{end-hl2msg}}
+=== explain_pills ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_pills|string}}
+{{hl2msg|long|subject|The weapon_pain_pills spawner that will be indicated}}
+{{end-hl2msg}}
+=== explain_weapons ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_weapons|string}}
+{{hl2msg|long|subject|The weapon_pain_pills spawner that will be indicated}}
+{{end-hl2msg}}
+=== entity_visible ===
+{{qnotice|}}<br>
+{{begin-hl2msg|entity_visible|string}}
+{{hl2msg|short|userid|The player who sees the entity}}
+{{hl2msg|long|subject|Entindex of the entity they see}}
+{{hl2msg|string|classname|Classname of the entity they see}}
+{{hl2msg|string|entityname|name of the entity they see}}
+{{end-hl2msg}}
+=== weapon_spawn_visible ===
+{{qnotice|}}<br>
+{{begin-hl2msg|weapon_spawn_visible|string}}
+{{hl2msg|short|userid|The player who sees the entity}}
+{{hl2msg|long|subject|Entindex of the entity they see}}
+{{hl2msg|string|weaponname|weapon name, or "melee"}}
+{{hl2msg|string|subtype|melee weapon name}}
+{{end-hl2msg}}
+=== boomer_near ===
+{{qnotice|}}<br>
+{{begin-hl2msg|boomer_near|string}}
+{{hl2msg|short|userid|The boomer}}
+{{hl2msg|short|victim|The survivor whom the boomer has gotten very close to}}
+{{end-hl2msg}}
+=== explain_pre_radio ===
+{{qnotice|explain the rescue radio will remind you to ready for the finale}}<br>
+{{begin-hl2msg|explain_pre_radio|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== started_pre_radio ===
+{{qnotice|explain the rescue radio will remind you to ready for the finale}}<br>
+{{begin-hl2msg|started_pre_radio|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_radio ===
+{{qnotice|explain the rescue radio will start the finale}}<br>
+{{begin-hl2msg|explain_radio|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_gas_truck ===
+{{qnotice|explain how pulling the lever on the gas truck will start the finale}}<br>
+{{begin-hl2msg|explain_gas_truck|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The lever}}
+{{end-hl2msg}}
+=== explain_panic_button ===
+{{qnotice|explain that pressing this button will start a panic event.}}<br>
+{{begin-hl2msg|explain_panic_button|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The panic button}}
+{{end-hl2msg}}
+=== explain_elevator_button ===
+{{qnotice|explain how to operate the hospital elevator button.}}<br>
+{{begin-hl2msg|explain_elevator_button|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The button}}
+{{end-hl2msg}}
+=== explain_lift_button ===
+{{qnotice|explain how to operate the lift button.}}<br>
+{{begin-hl2msg|explain_lift_button|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The lift button}}
+{{end-hl2msg}}
+=== explain_church_door ===
+{{qnotice|explain how to provoke the crazy church guy.}}<br>
+{{begin-hl2msg|explain_church_door|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The saferoom door}}
+{{end-hl2msg}}
+=== explain_emergency_door ===
+{{qnotice|explain how to open the emergency door.}}<br>
+{{begin-hl2msg|explain_emergency_door|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The door}}
+{{end-hl2msg}}
+=== explain_crane ===
+{{qnotice|explain how to lower the box on the crane.}}<br>
+{{begin-hl2msg|explain_crane|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The lever/button}}
+{{end-hl2msg}}
+=== explain_bridge ===
+{{qnotice|explain how to close the gates to make a bridge.}}<br>
+{{begin-hl2msg|explain_bridge|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The button}}
+{{end-hl2msg}}
+=== explain_gas_can_panic ===
+{{qnotice|explain how to shoot the gas can.}}<br>
+{{begin-hl2msg|explain_gas_can_panic|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The gas can}}
+{{end-hl2msg}}
+=== explain_van_panic ===
+{{qnotice|explain how to start the van.}}<br>
+{{begin-hl2msg|explain_van_panic|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The van}}
+{{end-hl2msg}}
+=== explain_mainstreet ===
+{{qnotice|explain how to lower the forklift}}<br>
+{{begin-hl2msg|explain_mainstreet|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The forklift}}
+{{end-hl2msg}}
+=== explain_train_lever ===
+{{qnotice|explain how to operate the train lever.}}<br>
+{{begin-hl2msg|explain_train_lever|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The lever on box car}}
+{{end-hl2msg}}
+=== explain_disturbance ===
+{{qnotice|explain that disturbances (car alarm) attract infected horde}}<br>
+{{begin-hl2msg|explain_disturbance|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The source of disturbance}}
+{{end-hl2msg}}
+=== explain_scavenge_goal ===
+{{qnotice|explain where to put the scavenge mode items}}<br>
+{{begin-hl2msg|explain_scavenge_goal|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The collection device}}
+{{end-hl2msg}}
+=== explain_scavenge_leave_area ===
+{{qnotice|explain that leaving the area, starts round}}<br>
+{{begin-hl2msg|explain_scavenge_leave_area|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|The entity}}
+{{end-hl2msg}}
+=== begin_scavenge_overtime ===
+{{qnotice|enter overtime in a scavenge round}}<br>
+{{begin-hl2msg|begin_scavenge_overtime|string}}
+{{end-hl2msg}}
+=== scavenge_round_start ===
+{{qnotice|a scavenge round has begun}}<br>
+{{begin-hl2msg|scavenge_round_start|string}}
+{{hl2msg|byte|round|round number, 1 based}}
+{{hl2msg|bool|firsthalf|start of the first half of the round}}
+{{end-hl2msg}}
+
+=== scavenge_round_halftime ===
+{{qnotice|a scavenge round is in halftime}}<br>
+{{begin-hl2msg|scavenge_round_halftime|string}}
+{{end-hl2msg}}
+=== scavenge_round_finished ===
+{{qnotice|a scavenge round has ended}}<br>
+{{begin-hl2msg|scavenge_round_finished|string}}
+{{end-hl2msg}}
+=== scavenge_score_tied ===
+{{qnotice|a team just tied the score}}<br>
+{{begin-hl2msg|scavenge_score_tied|string}}
+{{end-hl2msg}}
+=== versus_round_start ===
+{{qnotice|a versus round has begun}}<br>
+{{begin-hl2msg|versus_round_start|string}}
+{{end-hl2msg}}
+=== gascan_pour_blocked ===
+{{qnotice|can't pour the gas, someone else already is}}<br>
+{{begin-hl2msg|gascan_pour_blocked|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== gascan_pour_completed ===
+{{qnotice|player finished pouring a can}}<br>
+{{begin-hl2msg|gascan_pour_completed|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== gascan_dropped ===
+{{qnotice|}}<br>
+{{begin-hl2msg|gascan_dropped|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== gascan_pour_interrupted ===
+{{qnotice|we got interuppted pouring the gas can}}<br>
+{{begin-hl2msg|gascan_pour_interrupted|string}}
+{{hl2msg|short|userid|person who interuppted us}}
+{{end-hl2msg}}
+=== scavenge_match_finished ===
+{{qnotice|}}<br>
+{{begin-hl2msg|scavenge_match_finished|string}}
+{{hl2msg|byte|winners|winner team}}
+{{end-hl2msg}}
+=== versus_match_finished ===
+{{qnotice|}}<br>
+{{begin-hl2msg|versus_match_finished|string}}
+{{hl2msg|byte|winners|winner team}}
+{{end-hl2msg}}
+=== use_target ===
+{{qnotice|a new use target has been found}}<br>
+{{begin-hl2msg|use_target|string}}
+{{hl2msg|long|targetid|Entindex of the use target}}
+{{hl2msg|string|classname|classname of the use target}}
+{{hl2msg|bool|isprop|is this a prop that can be carried}}
+{{end-hl2msg}}
+=== player_use ===
+{{qnotice|a new use target has been found}}<br>
+{{eventnote|Called|When a Survivor presses +USE on a useable entity. i.e. Weapons, items, doors}}
+{{eventnote|Related Events|If targetid is an item, item_pickup will be called prior to player_use}}
+{{begin-hl2msg|player_use|string}}
+{{hl2msg|short|userid|userid of user}}
+{{hl2msg|long|targetid|Entindex of the used entity}}
+{{end-hl2msg}}
+=== friendly_fire ===
+{{qnotice|}}<br>
+{{begin-hl2msg|friendly_fire|string}}
+{{hl2msg|short|attacker|player who fired the weapon}}
+{{hl2msg|short|victim|player who got shot}}
+{{hl2msg|short|guilty|player who was at fault}}
+{{hl2msg|long|type|damage type}}
+{{end-hl2msg}}
+=== gameinstructor_draw ===
+{{qnotice|}}<br>
+{{begin-hl2msg|gameinstructor_draw|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== gameinstructor_nodraw ===
+{{qnotice|}}<br>
+{{begin-hl2msg|gameinstructor_nodraw|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+=== request_weapon_stats ===
+{{qnotice|}}<br>
+{{begin-hl2msg|request_weapon_stats|string}}
+{{hl2msg|short|userid|userid of user requesting their stats}}
+{{end-hl2msg}}
+=== player_talking_state ===
+{{qnotice|}}<br>
+{{begin-hl2msg|player_talking_state|string}}
+{{hl2msg|byte|player|}}
+{{hl2msg|bool|istalking|}}
+{{end-hl2msg}}
+=== weapon_pickup ===
+{{qnotice|client event for player has picked up a weapon. If that does not work, try using the "item_pickup" event.}}<br>
+{{begin-hl2msg|weapon_pickup|string}}
+{{hl2msg|byte|context|split screen message context}}
+{{hl2msg|byte|weaponid|}}
+{{hl2msg|byte|weaponslot|}}
+{{hl2msg|byte|dropped_by_infected|gender of the Infected that dropped the weapon}}
+{{end-hl2msg}}
+
+=== hunter_punched ===
+{{qnotice|}}<br>
+{{begin-hl2msg|hunter_punched|string}}
+{{hl2msg|short|userid|player who caused ignition}}
+{{hl2msg|long|hunteruserid|user ID of Hunter}}
+{{hl2msg|bool|islunging|TRUE if the Hunter was in the act of lunging}}
+{{end-hl2msg}}
+=== hunter_headshot ===
+{{qnotice|}}<br>
+{{begin-hl2msg|hunter_headshot|string}}
+{{hl2msg|short|userid|player who made the headshot}}
+{{hl2msg|long|hunteruserid|user ID of Hunter}}
+{{hl2msg|bool|islunging|TRUE if the Hunter was in the act of lunging}}
+{{end-hl2msg}}
+=== zombie_ignited ===
+{{qnotice|}}<br>
+{{begin-hl2msg|zombie_ignited|string}}
+{{hl2msg|short|userid|player who caused ignition}}
+{{hl2msg|short|gender|gender (type) of the infected}}
+{{hl2msg|long|entityid|entity ID of Tank}}
+{{hl2msg|string|victimname|"Witch", "Tank", "Hunter", "Smoker", or "Infected"}}
+{{hl2msg|bool|fire_ammo|true if incendiary ammo was used}}
+{{end-hl2msg}}
+=== boomer_exploded ===
+{{qnotice|}}<br>
+{{begin-hl2msg|boomer_exploded|string}}
+{{hl2msg|short|userid|Boomer that exploded}}
+{{hl2msg|short|attacker|player who caused the explosion}}
+{{hl2msg|bool|splashedbile|Exploding boomer splashed bile on Survivors}}
+{{end-hl2msg}}
+=== non_pistol_fired ===
+{{qnotice|}}<br>
+{{begin-hl2msg|non_pistol_fired|string}}
+{{hl2msg|short|userid|User that fired a non-pistol weapon}}
+{{end-hl2msg}}
+=== weapon_fire_at_40 ===
+{{qnotice|This is networked, special event for game instructor}}<br>
+{{begin-hl2msg|weapon_fire_at_40|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|string|weapon|used weapon name}}
+{{hl2msg|short|weaponid|used weapon ID}}
+{{hl2msg|short|count|number of bullets}}
+{{end-hl2msg}}
+
+=== total_ammo_below_40 ===
+{{qnotice|sent for any ammo type, except those with max ammo 1, or infinite ammo, like pistols}}<br>
+{{begin-hl2msg|total_ammo_below_40|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== player_hurt_concise ===
+{{qnotice|Abbreviated version of 'player_hurt' that is networked}}<br>
+{{begin-hl2msg|player_hurt_concise|string}}
+{{hl2msg|short|userid|user ID who was hurt}}
+{{hl2msg|long|attackerentid|entity id who attacked, if attacker not a player, and userid therefore invalid}}
+{{hl2msg|long|type|damage type}}
+{{hl2msg|short|dmg_health|damage done to health}}
+{{end-hl2msg}}
+
+=== tank_killed ===
+{{qnotice|}}<br>
+{{begin-hl2msg|tank_killed|string}}
+{{hl2msg|short|userid|user ID of dead tank}}
+{{hl2msg|short|attacker|user id of killer}}
+{{hl2msg|bool|solo|TRUE if a player single-handedly killed the Tank}}
+{{hl2msg|bool|melee_only|TRUE if the tank was only killed by melee attacks (no blast, burn, or bullet damage)}}
+{{hl2msg|bool|l4d1_only|TRUE if l4d1 survivors inflicted damage and the l4d2 survivors did not)}}
+{{end-hl2msg}}
+
+=== tank_rock_killed ===
+{{qnotice|}}<br>
+{{begin-hl2msg|tank_rock_killed|string}}
+{{hl2msg|short|userid|user id of killer}}
+{{end-hl2msg}}
+
+=== achievement_write_failed ===
+{{qnotice|Used for a notification message when an achievement fails to write}}<br>
+{{begin-hl2msg|achievement_write_failed|string}}
+{{hl2msg|None|None|}}
+{{end-hl2msg}}
+
+=== ghost_spawn_time ===
+{{qnotice|Used for clients to know how long until they become a ghost (and can spawn)}}<br>
+{{begin-hl2msg|ghost_spawn_time|string}}
+{{hl2msg|short|userid|user ID of the player that is becoming a ghost}}
+{{hl2msg|short|spawntime|How long of a wait until player is a ghost}}
+{{end-hl2msg}}
+
+=== survival_at_30min ===
+{{qnotice|Used to know when we elapse 30 minutes on a survival map}}<br>
+{{begin-hl2msg|survival_at_30min|string}}
+{{end-hl2msg}}
+=== survival_at_10min ===
+{{qnotice|Used to know when we elapse 10 minutes on a survival map}}<br>
+{{begin-hl2msg|survival_at_10min|string}}
+{{end-hl2msg}}
+=== explain_pre_drawbridge ===
+{{qnotice|Point out the button that will start the gauntlet finale.}}<br>
+{{begin-hl2msg|explain_pre_drawbridge|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_drawbridge ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_drawbridge|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_perimeter ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_perimeter|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_deactivate_alarm ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_deactivate_alarm|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_impound_lot ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_impound_lot|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_decon ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_decon|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_mall_window ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_mall_window|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_mall_alarm ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_mall_alarm|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_coaster ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_coaster|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_coaster_stop ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_coaster_stop|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_decon_wait ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_decon_wait|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== gauntlet_finale_start ===
+{{qnotice|}}<br>
+{{begin-hl2msg|gauntlet_finale_start|string}}
+{{end-hl2msg}}
+=== explain_float ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_float|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_ferry_button ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_ferry_button|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_hatch_button ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_hatch_button|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_shack_button ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_shack_button|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== upgrade_incendiary_ammo ===
+{{qnotice|}}<br>
+{{begin-hl2msg|upgrade_incendiary_ammo|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== upgrade_explosive_ammo ===
+{{qnotice|}}<br>
+{{begin-hl2msg|upgrade_explosive_ammo|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== receive_upgrade ===
+{{qnotice|}}<br>
+{{begin-hl2msg|receive_upgrade|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|string|upgrade|}}
+{{end-hl2msg}}
+=== explain_vehicle_arrival ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_vehicle_arrival|string}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== mounted_gun_start ===
+{{qnotice|}}<br>
+{{begin-hl2msg|mounted_gun_start|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== mounted_gun_overheated ===
+{{qnotice|}}<br>
+{{begin-hl2msg|mounted_gun_overheated|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== explain_burger_sign ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_burger_sign|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_carousel_button ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_carousel_button|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_carousel_destination ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_carousel_destination|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_stage_lighting ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_stage_lighting|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_stage_finale_start ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_stage_finale_start|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_stage_survival_start ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_stage_survival_start|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== ability_out_of_range ===
+{{qnotice|}}<br>
+{{begin-hl2msg|ability_out_of_range|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|string|ability|ability classname}}
+{{end-hl2msg}}
+=== explain_stage_pyrotechnics ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_stage_pyrotechnics|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_c3m4_radio1 ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_c3m4_radio1|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_c3m4_radio2 ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_c3m4_radio2|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_gates_are_open ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_gates_are_open|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_c2m4_ticketbooth ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_c2m4_ticketbooth|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_c3m4_rescue ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_c3m4_rescue|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_hotel_elevator_doors ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_hotel_elevator_doors|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_gun_shop_tanker ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_gun_shop_tanker|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_gun_shop ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_gun_shop|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_store_alarm ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_store_alarm|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_store_item ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_store_item|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_store_item_stop ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_store_item_stop|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_survival_generic ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_survival_generic|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_survival_alarm ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_survival_alarm|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_survival_radio ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_survival_radio|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_survival_carousel ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_survival_carousel|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_return_item ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_return_item|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_save_items ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_save_items|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== spit_burst ===
+{{qnotice|Triggers even after Spitter's death.}}<br>
+{{eventnote|Called|Triggers when Spitter's spit hits the ground.}}
+{{begin-hl2msg|spit_burst|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+
+=== entered_spit ===
+{{qnotice|}}<br>
+{{begin-hl2msg|entered_spit|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== temp_c4m1_getgas ===
+{{qnotice|}}<br>
+{{begin-hl2msg|temp_c4m1_getgas|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== temp_c4m3_return_to_boat ===
+{{qnotice|}}<br>
+{{begin-hl2msg|temp_c4m3_return_to_boat|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_c1m4_finale ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_c1m4_finale|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== c1m4_scavenge_instructions ===
+{{qnotice|}}<br>
+{{begin-hl2msg|c1m4_scavenge_instructions|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== punched_clown ===
+{{qnotice|}}<br>
+{{begin-hl2msg|punched_clown|string}}
+{{hl2msg|short|userid|player who punched the clown}}
+{{end-hl2msg}}
+=== charger_killed ===
+{{qnotice|}}<br>
+{{begin-hl2msg|charger_killed|string}}
+{{hl2msg|short|userid|user ID of dead charger}}
+{{hl2msg|short|attacker|user id of killer}}
+{{hl2msg|bool|melee|TRUE if a player killed the charger with a melee weapon}}
+{{hl2msg|bool|charging|TRUE if the charger was charging when it died}}
+{{end-hl2msg}}
+=== spitter_killed ===
+{{qnotice|}}<br>
+{{eventnote|Called|Triggers in Spitter's death.}}
+{{begin-hl2msg|spitter_killed|string}}
+{{hl2msg|short|userid|user ID of dead spitter}}
+{{hl2msg|short|attacker|user id of killer}}
+{{hl2msg|bool|has_spit|TRUE if the spitter spit at some point}}
+{{end-hl2msg}}
+
+=== jockey_ride ===
+{{qnotice|}}<br>
+{{begin-hl2msg|jockey_ride|string}}
+{{hl2msg|short|userid|player who did the lunging}}
+{{hl2msg|short|victim|player that got lunged}}
+{{end-hl2msg}}
+=== jockey_ride_end ===
+{{qnotice|}}<br>
+{{begin-hl2msg|jockey_ride_end|string}}
+{{hl2msg|short|userid|player who did the lunging}}
+{{hl2msg|short|victim|player that got lunged}}
+{{hl2msg|short|rescuer|Who stopped it}}
+{{hl2msg|float|ride_length|Duration of our ride}}
+{{end-hl2msg}}
+=== jockey_punched ===
+{{qnotice|}}<br>
+{{begin-hl2msg|jockey_punched|string}}
+{{hl2msg|short|userid|user ID of player that shoved the jockey}}
+{{hl2msg|long|jockeyuserid|user ID of Jockey}}
+{{hl2msg|bool|islunging| TRUE if Jockey was in the act of lunging}}
+{{end-hl2msg}}
+=== jockey_headshot ===
+{{qnotice|}}<br>
+{{begin-hl2msg|jockey_headshot|string}}
+{{hl2msg|short|userid|user ID of player that landed a headshot on the Jockey}}
+{{hl2msg|long|jockeyuserid|user ID of Jockey}}
+{{hl2msg|bool|islunging| TRUE if Jockey was in the act of lunging}}
+{{end-hl2msg}}
+=== jockey_killed ===
+{{qnotice|}}<br>
+{{begin-hl2msg|jockey_killed|string}}
+{{hl2msg|short|userid|user ID of dead jockey}}
+{{hl2msg|short|attacker|user id of killer}}
+{{hl2msg|string|weapon|weapon name}}
+{{end-hl2msg}}
+=== non_melee_fired ===
+{{qnotice|}}<br>
+{{begin-hl2msg|non_melee_fired|string}}
+{{hl2msg|short|userid|User that fired a non-melee weapon}}
+{{end-hl2msg}}
+=== infected_decapitated ===
+{{qnotice|}}<br>
+{{begin-hl2msg|infected_decapitated|string}}
+{{hl2msg|short|userid|userid of the player who did the decapitation}}
+{{hl2msg|string|weapon|melee weapon name}}
+{{end-hl2msg}}
+
+=== upgrade_pack_added ===
+{{qnotice|}}<br>
+{{begin-hl2msg|upgrade_pack_added|string}}
+{{hl2msg|short|upgradeid|}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== vomit_bomb_tank ===
+{{qnotice|}}<br>
+{{begin-hl2msg|vomit_bomb_tank|string}}
+{{hl2msg|short|userid|userid of the player who used the bomb}}
+{{end-hl2msg}}
+=== triggered_car_alarm ===
+{{qnotice|}}<br>
+{{begin-hl2msg|triggered_car_alarm|string}}
+{{hl2msg|short|userid|user ID of player who activated car alarm}}
+{{end-hl2msg}}
+=== panic_event_finished ===
+{{qnotice|}}<br>
+{{begin-hl2msg|panic_event_finished|string}}
+{{end-hl2msg}}
+=== charger_charge_start ===
+{{qnotice|The moment when the charger starts charging}}<br>
+{{eventnote|Issues|Called more than once per ability use. For consistency, check ability_use}}
+{{eventnote|Issues|Can be called after charger_charge_end. Use ability_use for an alternative start to end relationship.}}
+{{begin-hl2msg|charger_charge_start|string}}
+{{hl2msg|short|userid|user ID of the charger}}
+{{end-hl2msg}}
+
+=== charger_charge_end ===
+{{qnotice|}}<br>
+{{begin-hl2msg|charger_charge_end|string}}
+{{hl2msg|short|userid|user ID of the charger}}
+{{end-hl2msg}}
+=== charger_carry_start ===
+{{qnotice|The moment when the charger grabs a survivor}}<br>
+{{begin-hl2msg|charger_carry_start|string}}
+{{hl2msg|short|userid|user ID of the charger}}
+{{hl2msg|short|victim|user ID of the player who was charged}}
+{{end-hl2msg}}
+=== charger_carry_end ===
+{{qnotice|The moment when the charger stops charging a survivor (and will soon start pummeling)}}<br>
+{{begin-hl2msg|charger_carry_end|string}}
+{{hl2msg|short|userid|user ID of the charger}}
+{{hl2msg|short|victim|user ID of the player who was charged}}
+{{end-hl2msg}}
+=== charger_carry_kill ===
+{{qnotice|When a charger kills a survivor with a carry.}}<br>
+{{begin-hl2msg|charger_carry_kill |string}}
+{{hl2msg|short|userid|user ID of the charger}}
+{{hl2msg|short|victim|user ID of the victim}}
+{{end-hl2msg}}
+
+=== charger_impact ===
+{{qnotice|When a charger impacts a survivor they aren't carrying}}<br>
+{{begin-hl2msg|charger_impact|string}}
+{{hl2msg|short|userid|user ID of the charger}}
+{{hl2msg|short|victim|user ID of the player who was impacted}}
+{{end-hl2msg}}
+=== charger_pummel_start ===
+{{qnotice|The moment when the charger starts pummeling a survivor}}<br>
+{{begin-hl2msg|charger_pummel_start|string}}
+{{hl2msg|short|userid|user ID of the charger}}
+{{hl2msg|short|victim|user ID of the player who was charged}}
+{{end-hl2msg}}
+=== charger_pummel_end ===
+{{qnotice|When the charger is cleared from the survivor or the survivor dies.}}<br>
+{{begin-hl2msg|charger_pummel_end|string}}
+{{hl2msg|short|userid|user ID of the charger}}
+{{hl2msg|short|victim|}}
+{{hl2msg|short|rescuer|user ID of the player who rescued them}}
+{{end-hl2msg}}
+=== strongman_bell_knocked_off ===
+{{qnotice|The arcade bell on c2m4_barns}}<br>
+{{begin-hl2msg|strongman_bell_knocked_off|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|short|subject|}}
+{{end-hl2msg}}
+=== molotov_thrown ===
+{{qnotice|}}<br>
+{{begin-hl2msg|molotov_thrown|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== gas_can_forced_drop ===
+{{qnotice|}}<br>
+{{begin-hl2msg|gas_can_forced_drop|string}}
+{{hl2msg|short|userid|player that forced the drop}}
+{{hl2msg|short|victim|player that dropped it}}
+{{end-hl2msg}}
+=== explain_need_gnome_to_continue ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_need_gnome_to_continue|string}}
+{{hl2msg|none|none|}}
+{{end-hl2msg}}
+=== explain_survivor_glows_disabled ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_survivor_glows_disabled|string}}
+{{hl2msg|short|userid|The player we're explaining to}}
+{{end-hl2msg}}
+=== explain_item_glows_disabled ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_item_glows_disabled|string}}
+{{hl2msg|short|userid|The player we're explaining to}}
+{{end-hl2msg}}
+=== explain_rescue_disabled ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_rescue_disabled|string}}
+{{hl2msg|short|userid|The player we're explaining to}}
+{{end-hl2msg}}
+=== explain_bodyshots_reduced ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_bodyshots_reduced|string}}
+{{hl2msg|short|userid|The player we're explaining to}}
+{{end-hl2msg}}
+=== explain_witch_instant_kill ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_witch_instant_kill|string}}
+{{hl2msg|short|userid|The player we're explaining to}}
+{{end-hl2msg}}
+=== set_instructor_group_enabled ===
+{{qnotice|}}<br>
+{{begin-hl2msg|set_instructor_group_enabled|string}}
+{{hl2msg|string|group|}}
+{{hl2msg|short|enabled|}}
+{{end-hl2msg}}
+=== stashwhacker_game_won ===
+{{qnotice|}}<br>
+{{begin-hl2msg|stashwhacker_game_won|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|short|subject|}}
+{{end-hl2msg}}
+=== versus_marker_reached ===
+{{qnotice|}}<br>
+{{begin-hl2msg|versus_marker_reached|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|short|marker|}}
+{{end-hl2msg}}
+=== start_score_animation ===
+{{qnotice|}}<br>
+{{begin-hl2msg|start_score_animation|string}}
+{{end-hl2msg}}
+=== survival_round_start ===
+{{qnotice|}}<br>
+{{begin-hl2msg|survival_round_start|string}}
+{{end-hl2msg}}
+=== scavenge_gas_can_destroyed ===
+{{qnotice|}}<br>
+{{begin-hl2msg|scavenge_gas_can_destroyed|string}}
+{{hl2msg|short|userid|The player that destroyed it}}
+{{end-hl2msg}}
+=== explain_sewer_gate ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_sewer_gate|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_sewer_run ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_sewer_run|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== explain_c6m3_finale ===
+{{qnotice|}}<br>
+{{begin-hl2msg|explain_c6m3_finale|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== finale_bridge_lowering ===
+{{qnotice|}}<br>
+{{begin-hl2msg|finale_bridge_lowering|string}}
+{{hl2msg|short|userid|}}
+{{hl2msg|long|subject|}}
+{{end-hl2msg}}
+=== m60_streak_ended ===
+{{qnotice|I was holding down the m60 trigger, and now I'm not}}<br>
+{{begin-hl2msg|m60_streak_ended|string}}
+{{hl2msg|none|none|}}
+{{end-hl2msg}}
+=== chair_charged ===
+{{qnotice|}}<br>
+{{begin-hl2msg|chair_charged|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
+=== song_played ===
+{{qnotice|}}<br>
+{{begin-hl2msg|song_played|string}}
+{{hl2msg|none|none|}}
+{{end-hl2msg}}
+=== foot_locker_opened ===
+{{qnotice|}}<br>
+{{begin-hl2msg|foot_locker_opened|string}}
+{{hl2msg|short|userid|}}
+{{end-hl2msg}}
