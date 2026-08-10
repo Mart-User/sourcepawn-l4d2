@@ -1,0 +1,4 @@
+interface:
+  display_name: "SourcePawn for L4D2"
+  short_description: "Build and debug L4D2 SourceMod plugins"
+  default_prompt: "Use $sourcepawn-l4d2 to implement and compile an L4D2 SourceMod plugin against the target environment."

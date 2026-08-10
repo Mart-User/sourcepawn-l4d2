@@ -1,87 +1,42 @@
 # sourcepawn-l4d2
 
-SourcePawn development skill for Left 4 Dead 2 SourceMod plugins. Provides comprehensive offline reference for SM 1.11/1.12, Left4DHooks, game events, DirectorOptions, netprops, and datamaps — with full compatibility guidance for both SourceMod versions.
+An Agent Skill for developing, reviewing, debugging, and compiling Left 4 Dead 2 SourceMod plugins.
 
-## Installation
+The Skill uses progressive disclosure: `SKILL.md` contains the source-first workflow, while exact SourceMod, Left4DHooks, l4d2util, event, DirectorOptions, netprop, and datamap details remain in `references/` and are loaded only when needed.
 
-```bash
-npx skills add <repo-url> --skill sourcepawn-l4d2
+## Install for Codex
+
+Copy this repository so the installed Skill file is located at one of these paths:
+
+```text
+$HOME/.agents/skills/sourcepawn-l4d2/SKILL.md
+<repository>/.agents/skills/sourcepawn-l4d2/SKILL.md
 ```
 
-Or manually:
-```bash
-cp -r sourcepawn-l4d2 ~/.claude/skills/
-```
+Keep the `references/` and `agents/` directories beside `SKILL.md`. The installed parent directory must be named `sourcepawn-l4d2` to match the Skill name.
 
-## What's Included
+## Contents
 
-### SKILL.md (2188 lines)
-Complete reference covering:
+- `SKILL.md`: concise execution and verification workflow
+- `references/reference-map.md`: routing and upstream source policy
+- `references/provenance.md`: fixed revisions, completeness checks, and explicitly unverified local variants
+- `references/sm-1.11/include/`: bundled SourceMod 1.11 header snapshot
+- `references/sm-1.12/include/`: bundled SourceMod 1.12 header snapshot
+- `references/left4dhooks/`: bundled Left4DHooks headers plus matching L4D2 data and gamedata
+- `references/l4d2util/`, `multicolors/`, `smlib/`, and `standalone/`: dependency header snapshots
+- `references/game-data/`: L4D2 event, DirectorOptions, netprop, and datamap snapshots
+- `agents/openai.yaml`: Codex/ChatGPT UI metadata
 
-- **SM 1.11 → 1.12 full change log** — 5 breaking changes, 14 new natives, 6 new methodmaps/types, 16 parameter changes, all with version-guarded compat code
-- **Left4DHooks full API** — 100+ forwards (Pre/Post/PostHandled) and 200+ natives organized by category
-- **l4d2util constants** — teams, infected classes, weapon IDs, character names, hit groups, spawn flags
-- **Colored chat** — colors.inc and multicolors API with L4D2 color profile
-- **Game events** — 220+ events with complete field definitions
-- **DirectorOptions** — all 95 keys across General/Spawning/EMS/Finale/Gauntlet/Versus/Scavenge/Mutation categories, plus all enumerations
-- **Netprop tables** — CTerrorPlayer, Infected, Tank, Witch, CTerrorPlayerResource with offsets and bit sizes
-- **Datamap reference** — CBaseEntity full property map with offsets and flags
-- **SM official API** — complete signatures for sourcemod/clients/entity/halflife/sdktools/events/console/timers/files/convars/sound
-- **Plugin template** and **10 design rules + 10 anti-patterns**
+Bundled files are reference snapshots, not proof of a live server's exact build. The Skill requires the agent to reconcile them with the target compiler, includes, gamedata, logs, and upstream sources before claiming compatibility.
 
-### references/ (186 files, ~5 MB)
+## Primary upstream sources
 
-| Directory | Contents |
-|-----------|----------|
-| `sm-1.11/include/` | SM 1.11 complete API (70 .inc files) |
-| `sm-1.12/include/` | SM 1.12 complete API (70 .inc files) |
-| `left4dhooks/include/` | Left4DHooks extension (5 .inc files) |
-| `l4d2util/scripting/include/` | l4d2util library (8 .inc files) |
-| `multicolors/scripting/include/` | multicolors library (3 .inc files) |
-| `smlib/scripting/include/` | SMLib transitional syntax (27 .inc files) |
-| `standalone/` | colors.inc standalone include |
-| `game-data/` | DirectorOptions.txt, event catalog, netprop dump, datamap dump |
-
-## Usage
-
-The skill triggers automatically when you work with `.sp` or `.inc` files, or when you ask about L4D2 SourceMod development. The `SKILL.md` body loads into context; the `references/` directory is available for deep dives on demand.
-
-```sourcepawn
-// With this skill active, Claude knows:
-#include <left4dhooks>
-#include <l4d2util>
-#include <colors>
-
-// SM version compatibility
-#if SOURCEMOD_V_MINOR >= 12
-    // 1.12+ path
-#endif
-```
-
-## Requirements
-
-- Claude Code
-- SourceMod 1.11 or 1.12
-- Left4DHooks extension (for Left4DHooks natives/forwards)
-- l4d2util (optional, for convenience constants)
-
-## Package Structure
-
-```
-sourcepawn-l4d2/
-├── README.md
-├── SKILL.md
-└── references/
-    ├── sm-1.11/include/        (70 .inc)
-    ├── sm-1.12/include/        (70 .inc)
-    ├── left4dhooks/include/    (5 .inc)
-    ├── l4d2util/...            (8 .inc)
-    ├── multicolors/...         (3 .inc)
-    ├── smlib/...               (27 .inc)
-    ├── standalone/colors.inc
-    └── game-data/              (4 reference files)
-```
+- [SourceMod API](https://www.sourcemod.net/new-api/)
+- [SourceMod source](https://github.com/alliedmodders/sourcemod)
+- [SourcePawn source](https://github.com/alliedmodders/sourcepawn)
+- [Left4DHooks source](https://github.com/SilvDev/Left4DHooks)
+- [l4d2util source](https://github.com/ConfoglTeam/l4d2util)
 
 ## License
 
-Reference data sourced from publicly available SourceMod SDK, Left4DHooks, l4d2util, multicolors, and SMLib. Respect the licenses of each original project.
+See `LICENSE`. Bundled third-party reference files retain their upstream notices and license terms.
